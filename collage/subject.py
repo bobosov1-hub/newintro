@@ -104,7 +104,7 @@ def build_element(asset, build, key, role="support", height=500.0, res=1.25, acc
     bw_, bh_ = x1 - x0, y1 - y0
     # crop: fractions of the bbox; chaos nudges the crop edges
     cx0, cy0, cx1, cy1 = crop if crop is not None else (0.0, 0.0, 1.0, 1.0)
-    jit = [build.jit(rng, 0.0, 0.05) for _ in range(4)]
+    jit = [build.jit(rng, 0.0, 0.08) for _ in range(4)]
     if crop is not None:
         cx0, cy0 = np.clip(cx0 + jit[0] * (cx0 > 0), 0, 1), np.clip(cy0 + jit[1] * (cy0 > 0), 0, 1)
         cx1, cy1 = np.clip(cx1 + jit[2] * (cx1 < 1), 0, 1), np.clip(cy1 + jit[3] * (cy1 < 1), 0, 1)
@@ -260,8 +260,8 @@ def _band_cuts(build, rng, n, top, bottom, width):
     weights = np.array([1.35] + [1.0] * (n - 1))
     edges = top + span * np.cumsum(weights) / weights.sum()
     for i in range(n - 1):
-        y = edges[i] + build.jit(rng, 0.0, 0.08) * span / n
-        tilt = np.tan(np.deg2rad(build.jit(rng, 0.3, 2.4))) * width
+        y = edges[i] + build.jit(rng, 0.0, 0.14) * span / n
+        tilt = np.tan(np.deg2rad(build.jit(rng, 0.3, 4.0))) * width
         cuts.append((y - tilt / 2, y + tilt / 2))
     cuts.append((bottom + 5.0, bottom + 5.0))
     return cuts

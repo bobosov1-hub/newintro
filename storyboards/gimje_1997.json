@@ -142,12 +142,12 @@
     "height": 840,
     "x": -210,
     "top": -150,
-    "enter": 13.6
+    "enter": 12.9
    },
    "lockup": {
     "descriptor": "연고도 없이 혼자 내려온",
     "title": "27살 농협 직원",
-    "enter": 13.2,
+    "enter": 12.35,
     "size": 132
    },
    "support": [
@@ -624,7 +624,7 @@
    "lockup": {
     "descriptor": "낡고 위험하다며 극구 막아선",
     "title": "단 한 곳",
-    "enter": 72.7,
+    "enter": 71.2,
     "size": 150,
     "dx": -150
    },

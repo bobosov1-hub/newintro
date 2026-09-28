@@ -36,7 +36,7 @@ GENERATORS = {
     "sticker_like": (lambda: docs.sticker("좋아요", seed=23, w=620, filled=False), {}),
     "tape": (lambda: docs.tape(), {}),
     # fallbacks, used only when no photograph with this name exists
-    "man_back": (lambda: figures.man_back("jumper"), {"person": True}),
+    "man_back": (lambda: figures.man_back("suit"), {"person": True}),
     "woman_back": (lambda: figures.woman_back(), {"person": True}),
     "sluice_gate": (lambda: objects.sluice_gate(), {}),
     "concrete": (lambda: objects.concrete(), {}),

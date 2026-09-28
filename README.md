@@ -93,7 +93,14 @@ python render.py storyboards/gimje_1997.json --stills 3 10.5 31.9 --scale 0.5   
 
 ---
 
-## 4. 파일 구조
+## 4. 이번 빌드 & 검증
+
+- 최종본: \`--seed 1997 --chaos 0.4\`, 1920×1080 30fps H.264(CRF 21) + AAC 192k, 2분 13초. 빌드 매니페스트(\`output/*.json\`)에 장면별로 시드가 고른 강조 방식·가장자리 처리·띠 개수가 기록됩니다.
+- 재현성: 같은 시드·chaos로 따로 두 번 렌더한 프레임의 md5가 동일, 시드를 1만 바꿔도 배치·가장자리·회전·배경이 모두 달라짐을 확인했습니다.
+- chaos 0 → 띠가 정렬되고 회전이 거의 없는 깨끗한 구도, chaos 1 → 띠 오프셋 ±8.5%, 회전 ±6°, 요소 회전 ±14°, 배경 조각 최대 14장.
+- 사진을 받으면: \`sources/\`에 같은 이름(\`man_back\`, \`woman_back\`, \`sluice_gate\`, \`soban\`, \`concrete\`, \`rural_house\`, \`mountains\`)으로 넣고 \`prep_subject.py --batch sources/\` 후 같은 시드로 다시 렌더하면 연출은 그대로, 피사체만 실사로 바뀝니다.
+
+## 5. 파일 구조
 
 ```
 render.py                 스토리보드 → 영상/정지 프레임 (멀티프로세스, ffmpeg 인코딩 + 오디오 합성)
@@ -109,7 +116,7 @@ data/ korea_map.json transcript_gimje_1997.json
 sources/  assets/  fonts/  audio/
 ```
 
-## 5. 출처·라이선스
+## 6. 출처·라이선스
 - 폰트: Hahmlet, Nanum Myeongjo, Old Standard TT — SIL Open Font License (`fonts/OFL-*.txt`)
 - 지도: 통계청 2013 행정경계 (southkorea/southkorea-maps) 를 단순화
 - 배경 제거 모델: rembg 공개 ONNX(ISNet general-use, U²-Net) — 최초 실행 시 `~/.cache/collage-models`에 내려받음

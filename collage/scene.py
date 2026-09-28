@@ -96,14 +96,14 @@ def build_scene(spec, build, pool, W=1920, H=1080):
 
     # 2. background scatter: torn newspaper fragments, low contrast, placed by the seed
     n_sc = spec.get("scatter")
-    n_sc = int(round(build.amt(5, 11))) if n_sc is None else int(n_sc)
+    n_sc = int(round(build.amt(5, 14))) if n_sc is None else int(n_sc)
     if ink_page:
         n_sc = 0
     for i in range(n_sc):
         frag = pool.fragment((sid, i), scale=float(rng.uniform(0.8, 1.35)))
         x = float(rng.uniform(-0.60, 0.60)) * W * D_PAGE
         y = float(rng.uniform(-0.58, 0.58)) * H * D_PAGE
-        rot = build.jit(rng, 4.0, 38.0) + (90.0 if rng.random() < 0.12 else 0.0)
+        rot = build.jit(rng, 4.0, 60.0) + (90.0 if rng.random() < 0.12 else 0.0)
         add(Layer(frag, D_PAGE - 0.0006 * (i + 1), x, y, rot, shadow=0.30, page=D_PAGE, name=f"scatter{i}"))
 
     # 3. supporting elements (black and white only) ----------------------------------------
@@ -120,10 +120,10 @@ def build_scene(spec, build, pool, W=1920, H=1080):
                            card=ss.get("card"))
         depth = float(ss.get("depth", 1.05))
         ax, ay = ss.get("at", [0, 0])
-        sx = ax + build.jit(srng, 4, 70)
-        sy = ay + build.jit(srng, 4, 55)
-        srot = float(ss.get("rot", 0.0)) + build.jit(srng, 0.6, 9.0)
-        ssc = 1.0 + build.jit(srng, 0.01, 0.10)
+        sx = ax + build.jit(srng, 4, 110)
+        sy = ay + build.jit(srng, 4, 85)
+        srot = float(ss.get("rot", 0.0)) + build.jit(srng, 0.6, 14.0)
+        ssc = 1.0 + build.jit(srng, 0.01, 0.14)
         t_in = float(ss.get("enter", t0 + 0.15 + 0.14 * j))
         sup_times.append(t_in)
         ent = _enter(build, srng, ss.get("enter_kind"))
@@ -150,9 +150,9 @@ def build_scene(spec, build, pool, W=1920, H=1080):
         el = build_element(asset, build, (sid, "hero"), role="hero", height=float(hs.get("height", 720)),
                            res=float(hs.get("res", 1.2)), accent=hs.get("accent"), edge=hs.get("edge"),
                            crop=hs.get("crop"), bands=bands, card=hs.get("card"))
-        hscale = 1.0 + build.jit(hrng, 0.0, 0.07)
-        hrot = float(hs.get("rot", 0.0)) + build.jit(hrng, 0.3, 4.0)
-        hx = float(hs.get("x", 0.0)) + build.jit(hrng, 4, 60)
+        hscale = 1.0 + build.jit(hrng, 0.0, 0.10)
+        hrot = float(hs.get("rot", 0.0)) + build.jit(hrng, 0.3, 7.0)
+        hx = float(hs.get("x", 0.0)) + build.jit(hrng, 4, 90)
         tx, ty = el.meta["top_x"], el.meta["top_y"]
         finite = np.isfinite(ty)
         if "top" in hs:
@@ -218,7 +218,7 @@ def build_scene(spec, build, pool, W=1920, H=1080):
             y_top = float(np.min(cand)) if el.meta["person"] else float(np.percentile(cand, 3))
             ov = float(ls.get("overlap", 0.30 if el.meta["person"] else -0.02)) + build.jit(lrng, 0.0, 0.04)
             ly = y_top + ov * cap - base_off
-        lrot = build.jit(lrng, 0.2, 2.5)
+        lrot = build.jit(lrng, 0.2, 4.0)
         ent = _enter(build, lrng, ls.get("enter_kind", "drop"), 0.6)
         ent["dscale"] = 0.06 + 0.05 * c
         ent["lift"] = 0.0
@@ -250,10 +250,10 @@ def build_scene(spec, build, pool, W=1920, H=1080):
             if pc.role == "band":
                 i = pc.index
                 side = 1 if (i % 2 == 0) == (brng.random() < 0.5) else 0
-                px += build.jit(brng, 0.004, 0.045) * el.meta["subject_w"]
-                rot += build.jit(brng, 0.25, 3.2)
+                px += build.jit(brng, 0.004, 0.085) * el.meta["subject_w"]
+                rot += build.jit(brng, 0.25, 6.0)
                 depth = D_HERO - 0.002 * i
-                t_in = t_hero + i * stagger + build.jit(brng, 0.0, 0.05)
+                t_in = t_hero + i * stagger + build.jit(brng, 0.0, 0.09)
                 ent = _enter(build, brng, "slide", 0.9, side=side)
                 ent["dy"] = build.jit(brng, 5, 40)
                 dur = 0.55
@@ -283,7 +283,7 @@ def build_scene(spec, build, pool, W=1920, H=1080):
     n_fg = int(rng.integers(1, 3)) if n_fg is None else int(n_fg)
     for k in range(n_fg):
         frng = build.rng("fg", sid, k)
-        kind = build.pick(frng, ["news", "tape", "paper"], [0.45, 0.30, 0.25])
+        kind = build.pick(frng, ["news", "tape", "paper"], [0.6, 0.4, 0.0])
         if kind == "news":
             spr = pool.fragment((sid, "fg", k), scale=1.1, contrast=0.32)
         elif kind == "tape":
@@ -299,10 +299,11 @@ def build_scene(spec, build, pool, W=1920, H=1080):
             rgb = P.PAPER * paper_luma(fh, fw, frng, 1.0)[..., None]
             spr = Sprite(rgb, torn_mask(fh, fw, frng, 1.3, 7.0), None, res=1.0)
         depth = float(frng.uniform(0.58, 0.78))
-        side = build.pick(frng, ["l", "r", "t", "b"], [0.4, 0.4, 0.2, 0.0])
+        # left/right edges only: the lockup lives at the top, the hero in the middle
+        side = build.pick(frng, ["l", "r", "t", "b"], [0.5, 0.5, 0.0, 0.0])
         if side in ("l", "r"):
-            sx = (-1 if side == "l" else 1) * float(frng.uniform(0.46, 0.58)) * W
-            sy = float(frng.uniform(-0.42, 0.30)) * H
+            sx = (-1 if side == "l" else 1) * float(frng.uniform(0.50, 0.60)) * W
+            sy = float(frng.uniform(-0.30, 0.35)) * H
         else:
             sx = float(frng.uniform(-0.45, 0.45)) * W
             sy = (-1 if side == "t" else 1) * float(frng.uniform(0.46, 0.56)) * H

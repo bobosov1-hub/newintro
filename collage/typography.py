@@ -91,8 +91,8 @@ def render_words(line, fnt, build, rng, jit_scale=1.0, tracking=0.0, space_em=0.
     size = fnt.size
     for wd in words:
         m, base, adv, pad = text_mask(wd, fnt, tracking)
-        dy = build.jit(rng, 0.004, 0.045) * size * jit_scale
-        rot = build.jit(rng, 0.15, 2.2) * jit_scale
+        dy = build.jit(rng, 0.004, 0.07) * size * jit_scale
+        rot = build.jit(rng, 0.15, 3.4) * jit_scale
         pieces.append((_rotate(m, rot), base, adv, pad, dy))
     total = sum(p[2] for p in pieces) + space_em * size * (len(pieces) - 1)
     return pieces, total

@@ -45,7 +45,7 @@ def ffmpeg_bin():
 class Timeline:
     """Scenes + transitions. Transition specs live on the INCOMING scene."""
 
-    PUSH_OUT, PUSH_IN, SLIDE = 0.30, 0.55, 0.42
+    PUSH_OUT, PUSH_IN, SLIDE = 0.30, 0.55, 0.60
 
     def __init__(self, scenes, duration):
         self.scenes = scenes
