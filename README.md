@@ -80,6 +80,7 @@ python render.py storyboards/gimje_1997.json --stills 3 10.5 31.9 --scale 0.5   
    ```
    - `method`: `auto`(알파 있으면 사용, 없으면 ISNet) · `isnet` · `u2net` · `key`(단색 배경) · `none`(오려내지 않고 사각 인화로만 사용)
    - `person: true` → 띠 분할 대상. 선택 착색을 쓰려면 같은 크기의 흑백 마스크 `이름.part.png`(정의 부위=흰색)를 옆에 둡니다.
+     반자동 생성: `python tools/part_mask.py sources/man_back.jpg --region 0,0.30,1,1 --luma 0,0.38` (인물 영역 안, 목 아래의 어두운 부분 = 재킷)
    - 생성 이미지 오른쪽 아래의 작은 워터마크는 자동으로 지웁니다(`--no-watermark-fix`로 끔).
 3. `python prep_subject.py --batch sources/` → `assets/`에 배경 제거·흑백 결과와 메타데이터 생성.
 4. **스토리보드 JSON 작성**: 장면별 `start/end`, `hero`(에셋·높이·x·top·등장 시각), `lockup`(설명줄·제목·등장 시각), `support`, `beats`(푸시인/풀백 시각), `diagrams`, `transition`(cut/push/slide).
