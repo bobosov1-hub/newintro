@@ -1,0 +1,1187 @@
+{
+ "title": "잊혀진 X파일 - 1997 김제 농협 여직원 실종사건 (인트로)",
+ "audio": "../audio/gimje_1997_intro.mp3",
+ "duration": 133.28,
+ "fps": 30,
+ "step_fps": 12,
+ "size": [
+  1920,
+  1080
+ ],
+ "scenes": [
+  {
+   "id": "s01_hook",
+   "start": 0.0,
+   "end": 7.3,
+   "note": "여러분은 매일 마주치는 이웃의 다정한 미소 뒤에 어떤 진실이 숨어 있을지 상상해 본 적 있으십니까?",
+   "transition": {
+    "type": "cut"
+   },
+   "rack": true,
+   "hero": {
+    "asset": "man_back",
+    "crop": [
+     0,
+     0,
+     1,
+     0.62
+    ],
+    "height": 800,
+    "x": 190,
+    "top": -170,
+    "enter": 1.4
+   },
+   "lockup": {
+    "descriptor": "매일 마주치는 이웃의",
+    "title": "다정한 미소 뒤에",
+    "enter": 0.9,
+    "size": 134
+   },
+   "support": [
+    {
+     "asset": "rural_house",
+     "height": 300,
+     "at": [
+      -650,
+      170
+     ],
+     "depth": 1.07,
+     "enter": 0.35
+    }
+   ],
+   "beats": [
+    {
+     "t": 2.25,
+     "type": "push",
+     "amount": 0.05,
+     "dur": 0.55
+    },
+    {
+     "t": 3.35,
+     "type": "push",
+     "amount": 0.1,
+     "dur": 0.7,
+     "dy": -60
+    }
+   ]
+  },
+  {
+   "id": "s02_gimje",
+   "start": 7.3,
+   "end": 11.75,
+   "note": "1997년 가을 / 전북 김제의 한 시골 마을",
+   "transition": {
+    "type": "push"
+   },
+   "hero": {
+    "asset": "map_jeonbuk",
+    "height": 540,
+    "x": 40,
+    "top": -40,
+    "enter": 8.2
+   },
+   "lockup": {
+    "descriptor": "전북 김제의 한 시골 마을",
+    "title": "1997년 가을",
+    "enter": 7.6,
+    "size": 150
+   },
+   "support": [
+    {
+     "asset": "mountains",
+     "height": 330,
+     "at": [
+      -690,
+      250
+     ],
+     "depth": 1.08,
+     "enter": 7.45,
+     "edge": "torn"
+    }
+   ],
+   "diagrams": [
+    {
+     "type": "ring",
+     "on": "hero",
+     "src": "part",
+     "r": [
+      118,
+      92
+     ],
+     "t": 9.8,
+     "dur": 0.8
+    }
+   ],
+   "beats": [
+    {
+     "t": 9.75,
+     "type": "push",
+     "amount": 0.11,
+     "target": "part",
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s03_clerk",
+   "start": 11.75,
+   "end": 20.0,
+   "note": "연고도 없이 혼자 내려온 27살 농협 직원 박수정 씨에게 / 마을 사람들은 따뜻한 울타리가 되어주었습니다.",
+   "transition": {
+    "type": "slide",
+    "dir": "left"
+   },
+   "hero": {
+    "asset": "woman_back",
+    "crop": [
+     0,
+     0,
+     1,
+     0.78
+    ],
+    "height": 840,
+    "x": -210,
+    "top": -150,
+    "enter": 13.6
+   },
+   "lockup": {
+    "descriptor": "연고도 없이 혼자 내려온",
+    "title": "27살 농협 직원",
+    "enter": 13.2,
+    "size": 132
+   },
+   "support": [
+    {
+     "asset": "rural_house",
+     "height": 360,
+     "at": [
+      700,
+      190
+     ],
+     "depth": 1.07,
+     "enter": 12.2
+    }
+   ],
+   "beats": [
+    {
+     "t": 16.6,
+     "type": "pull",
+     "amount": 0.07,
+     "dur": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s04_table",
+   "start": 20.0,
+   "end": 28.0,
+   "note": "특히 명절마다 밥상을 건네며 챙겨주던 마을 이장은 / 그녀에게 아버지처럼 미덥고 고마운 존재였죠.",
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "soban",
+    "fallback": "case_file",
+    "height": 560,
+    "x": 170,
+    "top": -20,
+    "enter": 21.3
+   },
+   "lockup": {
+    "descriptor": "아버지처럼 챙겨주던 마을 이장의",
+    "title": "명절 밥상",
+    "enter": 20.5,
+    "size": 150
+   },
+   "support": [
+    {
+     "asset": "man_back",
+     "height": 560,
+     "crop": [
+      0,
+      0,
+      1,
+      0.6
+     ],
+     "at": [
+      -650,
+      140
+     ],
+     "depth": 1.06,
+     "enter": 22.9
+    }
+   ],
+   "diagrams": [
+    {
+     "type": "underline_title",
+     "t": 24.85,
+     "dur": 0.6
+    }
+   ],
+   "beats": [
+    {
+     "t": 24.8,
+     "type": "push",
+     "amount": 0.09,
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s05_vanish",
+   "start": 28.0,
+   "end": 33.1,
+   "note": "하지만 어느 날 / 그녀가 거짓말처럼 흔적도 없이 사라집니다.",
+   "transition": {
+    "type": "push"
+   },
+   "hero": {
+    "asset": "woman_back",
+    "crop": [
+     0,
+     0,
+     1,
+     0.7
+    ],
+    "height": 820,
+    "x": 0,
+    "top": -130,
+    "enter": 28.7,
+    "exit": {
+     "t": 31.35
+    }
+   },
+   "lockup": {
+    "descriptor": "어느 날, 거짓말처럼",
+    "title": "흔적도 없이",
+    "enter": 28.25,
+    "size": 150
+   },
+   "beats": [
+    {
+     "t": 31.4,
+     "type": "pull",
+     "amount": 0.06,
+     "dur": 0.9
+    }
+   ],
+   "fg": 1
+  },
+  {
+   "id": "s06_report",
+   "start": 33.1,
+   "end": 36.0,
+   "note": "모두가 단순 가출이라며 외면할 때",
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "report_form",
+    "height": 700,
+    "x": 230,
+    "top": -90,
+    "rot": -3,
+    "enter": 33.75
+   },
+   "lockup": {
+    "descriptor": "모두가 외면할 때",
+    "title": "단순 가출",
+    "enter": 33.3,
+    "size": 150,
+    "dx": -120
+   },
+   "beats": [
+    {
+     "t": 34.6,
+     "type": "push",
+     "amount": 0.07,
+     "target": "part",
+     "pull": 0.4,
+     "dur": 0.6
+    }
+   ],
+   "fg": 1
+  },
+  {
+   "id": "s07_search",
+   "start": 36.0,
+   "end": 44.65,
+   "note": "마을 이장은 무려 12일 동안이나 가족들보다 더 앞장서서 / 온 산을 뒤지며 애타게 박수정 씨의 이름을 불렀습니다.",
+   "transition": {
+    "type": "slide",
+    "dir": "up"
+   },
+   "hero": {
+    "asset": "man_back",
+    "crop": [
+     0,
+     0,
+     1,
+     0.8
+    ],
+    "height": 840,
+    "x": 350,
+    "top": -150,
+    "enter": 37.7
+   },
+   "lockup": {
+    "descriptor": "가족보다 앞장서 온 산을 뒤진",
+    "title": "12일 동안",
+    "enter": 37.25,
+    "size": 150,
+    "dx": -60
+   },
+   "support": [
+    {
+     "asset": "mountains",
+     "height": 430,
+     "at": [
+      -360,
+      40
+     ],
+     "depth": 1.09,
+     "enter": 36.2
+    },
+    {
+     "asset": "calendar",
+     "name": "cal",
+     "height": 440,
+     "at": [
+      -520,
+      230
+     ],
+     "depth": 1.04,
+     "enter": 36.5,
+     "rot": -5
+    }
+   ],
+   "diagrams": [
+    {
+     "type": "cross_days",
+     "on": "cal",
+     "days": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+     ],
+     "t": 38.3,
+     "stagger": 0.12,
+     "size": 34,
+     "width": 4
+    }
+   ],
+   "beats": [
+    {
+     "t": 40.6,
+     "type": "push",
+     "amount": 0.08,
+     "dur": 0.8
+    },
+    {
+     "t": 42.9,
+     "type": "push",
+     "amount": 0.06,
+     "dur": 0.7,
+     "dy": -80
+    }
+   ]
+  },
+  {
+   "id": "s08_but",
+   "start": 44.65,
+   "end": 46.45,
+   "note": "그런데 말입니다.",
+   "transition": {
+    "type": "cut",
+    "leak": true
+   },
+   "page": "ink",
+   "lockup": {
+    "hero": true,
+    "descriptor": "",
+    "title": "그런데 말입니다",
+    "enter": 44.95,
+    "size": 170,
+    "at": [
+     0,
+     -20
+    ],
+    "rule": false
+   },
+   "beats": [
+    {
+     "t": 45.25,
+     "type": "push",
+     "amount": 0.12,
+     "target": "lockup",
+     "dur": 0.55
+    }
+   ],
+   "fg": 0,
+   "scatter": 0
+  },
+  {
+   "id": "s09_poster",
+   "start": 46.45,
+   "end": 53.25,
+   "note": "직업도 좋고 별다른 문제도 없었던 그녀가 / 갑자기 단순 가출이라는 게 말도 되지 않았지만",
+   "transition": {
+    "type": "push"
+   },
+   "hero": {
+    "asset": "missing_poster",
+    "height": 740,
+    "x": -250,
+    "top": -95,
+    "rot": 3,
+    "enter": 47.2
+   },
+   "lockup": {
+    "descriptor": "직업도 좋고 문제도 없던 그녀가",
+    "title": "갑자기 가출?",
+    "enter": 49.95,
+    "size": 140,
+    "dx": 120
+   },
+   "support": [
+    {
+     "asset": "woman_back",
+     "height": 560,
+     "crop": [
+      0,
+      0,
+      1,
+      0.6
+     ],
+     "at": [
+      620,
+      150
+     ],
+     "depth": 1.06,
+     "enter": 46.8
+    }
+   ],
+   "beats": [
+    {
+     "t": 51.55,
+     "type": "push",
+     "amount": 0.1,
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s10_closed",
+   "start": 53.25,
+   "end": 59.2,
+   "note": "당시 사건은 무언의 압박이라도 받은 듯 조용하고 빠르게 처리되어 가고 있었습니다.",
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "case_file",
+    "height": 600,
+    "x": 60,
+    "top": -30,
+    "rot": -3,
+    "enter": 54.6
+   },
+   "lockup": {
+    "descriptor": "조용하고 빠르게 처리된 사건",
+    "title": "무언의 압박",
+    "enter": 54.1,
+    "size": 150
+   },
+   "support": [
+    {
+     "asset": "report_form",
+     "height": 560,
+     "at": [
+      -640,
+      170
+     ],
+     "depth": 1.07,
+     "rot": -8,
+     "enter": 53.5
+    }
+   ],
+   "beats": [
+    {
+     "t": 56.95,
+     "type": "push",
+     "amount": 0.1,
+     "dur": 0.7,
+     "dx": 250,
+     "dy": -120
+    }
+   ]
+  },
+  {
+   "id": "s11_one_man",
+   "start": 59.2,
+   "end": 69.75,
+   "note": "그리고 이 사건에서 정말 특이했던 점은 / 공권력인 경찰의 수사에 입김을 넣을 수 있었던 단 한 사람 / 바로 마을 이장이었다는 것이죠",
+   "transition": {
+    "type": "slide",
+    "dir": "right"
+   },
+   "hero": {
+    "asset": "man_back",
+    "crop": [
+     0,
+     0,
+     1,
+     0.66
+    ],
+    "height": 820,
+    "x": -120,
+    "top": -150,
+    "enter": 65.9
+   },
+   "lockup": {
+    "descriptor": "경찰 수사에 입김을 넣을 수 있었던",
+    "title": "단 한 사람",
+    "enter": 65.5,
+    "size": 150
+   },
+   "support": [
+    {
+     "asset": "report_form",
+     "height": 520,
+     "at": [
+      -660,
+      120
+     ],
+     "depth": 1.07,
+     "rot": -6,
+     "enter": 59.8
+    },
+    {
+     "asset": "case_file",
+     "height": 400,
+     "at": [
+      650,
+      60
+     ],
+     "depth": 1.06,
+     "rot": 5,
+     "enter": 61.2
+    },
+    {
+     "asset": "clipping",
+     "height": 440,
+     "at": [
+      560,
+      -300
+     ],
+     "depth": 1.08,
+     "rot": -4,
+     "enter": 63.2
+    }
+   ],
+   "diagrams": [
+    {
+     "type": "underline_title",
+     "t": 66.3,
+     "dur": 0.6
+    }
+   ],
+   "beats": [
+    {
+     "t": 67.1,
+     "type": "push",
+     "amount": 0.14,
+     "dur": 0.7,
+     "dy": -40
+    }
+   ]
+  },
+  {
+   "id": "s12_sign",
+   "start": 69.75,
+   "end": 78.1,
+   "note": "그리고 며칠간의 수사 과정에서 / 이장이 낡고 위험하다며 사람들의 발길을 극구 막아선 단 한 곳이 있었습니다.",
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "warning_sign",
+    "height": 720,
+    "x": 230,
+    "top": -110,
+    "rot": 2,
+    "enter": 73.2
+   },
+   "lockup": {
+    "descriptor": "낡고 위험하다며 극구 막아선",
+    "title": "단 한 곳",
+    "enter": 72.7,
+    "size": 150,
+    "dx": -150
+   },
+   "support": [
+    {
+     "asset": "mountains",
+     "height": 360,
+     "at": [
+      -600,
+      180
+     ],
+     "depth": 1.09,
+     "enter": 70.2
+    }
+   ],
+   "beats": [
+    {
+     "t": 75.9,
+     "type": "push",
+     "amount": 0.1,
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s13_gate",
+   "start": 78.1,
+   "end": 81.35,
+   "note": "바로 저수지 수문 하부였습니다.",
+   "transition": {
+    "type": "push"
+   },
+   "hero": {
+    "asset": "sluice_gate",
+    "fallback": "warning_sign",
+    "height": 700,
+    "x": 0,
+    "top": -120,
+    "enter": 78.75
+   },
+   "lockup": {
+    "descriptor": "바로",
+    "title": "저수지 수문 하부",
+    "enter": 78.35,
+    "size": 142
+   },
+   "beats": [
+    {
+     "t": 79.55,
+     "type": "push",
+     "amount": 0.12,
+     "dur": 0.75,
+     "dy": 110
+    }
+   ],
+   "fg": 1
+  },
+  {
+   "id": "s14_concrete",
+   "start": 81.35,
+   "end": 90.7,
+   "note": "하지만 12년이 지난 어느 날 / 수문 보수공사 현장에서 / 부서진 콘크리트 사이에서 있어서는 안 될 백골 시신이 발견되면서",
+   "transition": {
+    "type": "slide",
+    "dir": "left"
+   },
+   "hero": {
+    "asset": "concrete",
+    "fallback": "clipping",
+    "height": 520,
+    "x": 330,
+    "top": 10,
+    "enter": 86.1
+   },
+   "lockup": {
+    "descriptor": "수문 보수공사 현장에서",
+    "title": "12년 뒤",
+    "enter": 81.8,
+    "size": 160,
+    "at": [
+     -300,
+     -250
+    ]
+   },
+   "diagrams": [
+    {
+     "type": "timeline",
+     "x0": -740,
+     "x1": -140,
+     "y": 150,
+     "ticks": 12,
+     "left": "1997",
+     "right": "2009",
+     "t": 82.3,
+     "dur": 1.5,
+     "width": 4
+    }
+   ],
+   "beats": [
+    {
+     "t": 88.75,
+     "type": "push",
+     "amount": 0.11,
+     "dur": 0.7,
+     "pull": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s15_surface",
+   "start": 90.7,
+   "end": 99.6,
+   "note": "이 사건은 마을 사람들의 입에 / 그리고 그날 입김을 넣을 수 있었던 이장에게도 / 관심이 쏠리며 / 다시 수면 위로 떠오르게 됩니다.",
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "clipping",
+    "height": 720,
+    "x": -170,
+    "top": -110,
+    "rot": 2,
+    "enter": 91.6
+   },
+   "lockup": {
+    "descriptor": "12년 만에",
+    "title": "다시 수면 위로",
+    "enter": 97.4,
+    "size": 140
+   },
+   "support": [
+    {
+     "asset": "rural_house",
+     "height": 300,
+     "at": [
+      -760,
+      280
+     ],
+     "depth": 1.08,
+     "enter": 91.0
+    },
+    {
+     "asset": "man_back",
+     "height": 560,
+     "crop": [
+      0,
+      0,
+      1,
+      0.62
+     ],
+     "at": [
+      650,
+      170
+     ],
+     "depth": 1.05,
+     "enter": 95.2
+    }
+   ],
+   "beats": [
+    {
+     "t": 97.5,
+     "type": "push",
+     "amount": 0.1,
+     "dur": 0.75
+    }
+   ]
+  },
+  {
+   "id": "s16_neighbor",
+   "start": 99.6,
+   "end": 106.25,
+   "note": "과연 그녀를 애타게 찾던 다정한 이웃, 이장은 / 이 사건과 무슨 관계가 있을까요?",
+   "transition": {
+    "type": "push"
+   },
+   "hero": {
+    "asset": "man_back",
+    "crop": [
+     0,
+     0,
+     1,
+     0.62
+    ],
+    "height": 840,
+    "x": 210,
+    "top": -150,
+    "enter": 101.2
+   },
+   "lockup": {
+    "descriptor": "그녀를 애타게 찾던",
+    "title": "‘다정한 이웃’",
+    "enter": 100.8,
+    "size": 150
+   },
+   "support": [
+    {
+     "asset": "soban",
+     "height": 360,
+     "at": [
+      -650,
+      220
+     ],
+     "depth": 1.07,
+     "enter": 100.2
+    }
+   ],
+   "beats": [
+    {
+     "t": 104.35,
+     "type": "push",
+     "amount": 0.13,
+     "dur": 0.7,
+     "dy": -70
+    }
+   ]
+  },
+  {
+   "id": "s17_why",
+   "start": 106.25,
+   "end": 110.55,
+   "note": "그리고 그녀는 왜 마을 수문 쪽에서 발견된 것일까요?",
+   "transition": {
+    "type": "cut",
+    "leak": true
+   },
+   "lockup": {
+    "hero": true,
+    "descriptor": "그녀는 왜 수문 쪽에서 발견되었을까",
+    "title": "왜?",
+    "enter": 107.3,
+    "size": 300,
+    "at": [
+     0,
+     -40
+    ]
+   },
+   "support": [
+    {
+     "asset": "sluice_gate",
+     "height": 520,
+     "at": [
+      620,
+      170
+     ],
+     "depth": 1.06,
+     "enter": 106.5
+    },
+    {
+     "asset": "woman_back",
+     "height": 520,
+     "crop": [
+      0,
+      0,
+      1,
+      0.6
+     ],
+     "at": [
+      -640,
+      170
+     ],
+     "depth": 1.05,
+     "enter": 106.8
+    }
+   ],
+   "beats": [
+    {
+     "t": 107.6,
+     "type": "push",
+     "amount": 0.1,
+     "target": "lockup",
+     "dur": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s18_title",
+   "start": 110.55,
+   "end": 118.4,
+   "note": "잊혀진 X파일이 오늘 들려드릴 이야기는 / 1997년 / 김제 농협 여직원 실종사건입니다.",
+   "transition": {
+    "type": "push",
+    "leak": true
+   },
+   "rack": true,
+   "hero": {
+    "asset": "case_file_x",
+    "height": 590,
+    "x": 0,
+    "top": 20,
+    "enter": 112.2
+   },
+   "lockup": {
+    "descriptor": "잊혀진 X파일 · 1997",
+    "title": "김제 농협 여직원\n실종사건",
+    "enter": 114.15,
+    "size": 124
+   },
+   "support": [
+    {
+     "asset": "map_jeonbuk",
+     "height": 300,
+     "at": [
+      -700,
+      -300
+     ],
+     "depth": 1.09,
+     "enter": 110.8
+    },
+    {
+     "asset": "sluice_gate",
+     "height": 380,
+     "at": [
+      720,
+      250
+     ],
+     "depth": 1.07,
+     "enter": 111.0
+    },
+    {
+     "asset": "woman_back",
+     "height": 420,
+     "crop": [
+      0,
+      0,
+      1,
+      0.6
+     ],
+     "at": [
+      -730,
+      280
+     ],
+     "depth": 1.06,
+     "enter": 111.2
+    },
+    {
+     "asset": "man_back",
+     "height": 420,
+     "crop": [
+      0,
+      0,
+      1,
+      0.6
+     ],
+     "at": [
+      740,
+      -250
+     ],
+     "depth": 1.08,
+     "enter": 111.4
+    }
+   ],
+   "beats": [
+    {
+     "t": 115.55,
+     "type": "push",
+     "amount": 0.12,
+     "dur": 0.8
+    }
+   ],
+   "fg": 2
+  },
+  {
+   "id": "s19_subscribe",
+   "start": 118.4,
+   "end": 122.7,
+   "note": "시작 전에 구독과 좋아요를 눌러주시면 감사하겠습니다.",
+   "transition": {
+    "type": "slide",
+    "dir": "up"
+   },
+   "hero": {
+    "asset": "sticker_sub",
+    "accent": "selective",
+    "height": 230,
+    "x": -210,
+    "top": 60,
+    "rot": -4,
+    "enter": 119.4
+   },
+   "lockup": {
+    "descriptor": "이야기 시작 전에",
+    "title": "구독과 좋아요",
+    "enter": 118.8,
+    "size": 140,
+    "at": [
+     0,
+     -200
+    ]
+   },
+   "support": [
+    {
+     "asset": "sticker_like",
+     "height": 210,
+     "at": [
+      330,
+      170
+     ],
+     "depth": 1.04,
+     "rot": 5,
+     "enter": 119.9
+    }
+   ],
+   "beats": [
+    {
+     "t": 120.2,
+     "type": "push",
+     "amount": 0.07,
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s20_regions",
+   "start": 122.7,
+   "end": 128.3,
+   "note": "어느 지역에서 시청 중이신지 댓글 남겨주시면 / 한 분 한 분 인사드리겠습니다.",
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "map_korea",
+    "height": 820,
+    "x": 380,
+    "top": -330,
+    "enter": 123.4
+   },
+   "lockup": {
+    "descriptor": "댓글로 남겨주세요",
+    "title": "어디서 보고\n계신가요?",
+    "enter": 123.0,
+    "size": 128,
+    "at": [
+     -400,
+     -40
+    ],
+    "align": "left"
+   },
+   "diagrams": [
+    {
+     "type": "ring",
+     "on": "hero",
+     "lonlat": [
+      126.98,
+      37.56
+     ],
+     "r": [
+      34,
+      28
+     ],
+     "t": 126.4,
+     "dur": 0.4,
+     "width": 4
+    },
+    {
+     "type": "ring",
+     "on": "hero",
+     "lonlat": [
+      129.07,
+      35.18
+     ],
+     "r": [
+      34,
+      28
+     ],
+     "t": 126.7,
+     "dur": 0.4,
+     "width": 4
+    },
+    {
+     "type": "ring",
+     "on": "hero",
+     "lonlat": [
+      126.85,
+      35.16
+     ],
+     "r": [
+      34,
+      28
+     ],
+     "t": 127.0,
+     "dur": 0.4,
+     "width": 4
+    },
+    {
+     "type": "ring",
+     "on": "hero",
+     "lonlat": [
+      128.6,
+      35.87
+     ],
+     "r": [
+      34,
+      28
+     ],
+     "t": 127.3,
+     "dur": 0.4,
+     "width": 4
+    },
+    {
+     "type": "ring",
+     "on": "hero",
+     "lonlat": [
+      126.53,
+      33.45
+     ],
+     "r": [
+      34,
+      28
+     ],
+     "t": 127.6,
+     "dur": 0.4,
+     "width": 4
+    }
+   ],
+   "beats": [
+    {
+     "t": 126.35,
+     "type": "push",
+     "amount": 0.05,
+     "dur": 0.9,
+     "pull": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s21_start",
+   "start": 128.3,
+   "end": 133.28,
+   "note": "이야기 시작합니다.",
+   "transition": {
+    "type": "push",
+    "leak": true
+   },
+   "hero": {
+    "asset": "sluice_gate",
+    "fallback": "case_file_x",
+    "height": 600,
+    "x": 0,
+    "top": 20,
+    "enter": 128.9
+   },
+   "lockup": {
+    "descriptor": "잊혀진 X파일",
+    "title": "이야기 시작합니다",
+    "enter": 128.55,
+    "size": 140
+   },
+   "beats": [
+    {
+     "t": 130.2,
+     "type": "pull",
+     "amount": 0.1,
+     "dur": 2.2,
+     "ease": "cubic"
+    }
+   ],
+   "fade_out": 0.9
+  }
+ ]
+}

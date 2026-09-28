@@ -1,0 +1,8 @@
+numpy>=1.24
+opencv-python-headless>=4.8
+Pillow>=10.0
+onnxruntime>=1.16        # prep_subject.py background removal (ISNet / U2-Net ONNX)
+imageio-ffmpeg>=0.4.9    # bundled ffmpeg (libx264 + aac) for render.py
+# optional - tools/transcribe.py (narration -> timed transcript)
+# sherpa-onnx>=1.10
+# kaldi-native-fbank>=1.20

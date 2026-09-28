@@ -1,0 +1,80 @@
+{
+ "map_jeonbuk": {
+  "method": "alpha",
+  "generated": true
+ },
+ "map_korea": {
+  "method": "alpha",
+  "generated": true
+ },
+ "report_form": {
+  "method": "alpha",
+  "generated": true
+ },
+ "missing_poster": {
+  "method": "alpha",
+  "generated": true
+ },
+ "case_file": {
+  "method": "alpha",
+  "generated": true
+ },
+ "case_file_x": {
+  "method": "alpha",
+  "generated": true
+ },
+ "clipping": {
+  "method": "alpha",
+  "generated": true
+ },
+ "warning_sign": {
+  "method": "alpha",
+  "generated": true
+ },
+ "calendar": {
+  "method": "alpha",
+  "generated": true
+ },
+ "sticker_sub": {
+  "method": "alpha",
+  "generated": true
+ },
+ "sticker_like": {
+  "method": "alpha",
+  "generated": true
+ },
+ "tape": {
+  "method": "alpha",
+  "generated": true
+ },
+ "man_back": {
+  "person": true,
+  "method": "alpha",
+  "generated": true
+ },
+ "woman_back": {
+  "person": true,
+  "method": "alpha",
+  "generated": true
+ },
+ "sluice_gate": {
+  "method": "alpha",
+  "generated": true
+ },
+ "concrete": {
+  "method": "alpha",
+  "generated": true
+ },
+ "soban": {
+  "method": "alpha",
+  "generated": true
+ },
+ "rural_house": {
+  "method": "alpha",
+  "generated": true
+ },
+ "mountains": {
+  "method": "alpha",
+  "generated": true
+ }
+}
