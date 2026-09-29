@@ -2,16 +2,17 @@
   "title": "졸리컷",
   "voice": "ko-KR-InJoonNeural",
   "rate": "+25%",
-  "speed": 1.2,
-  "voicebox": {"profile_id": "", "language": "ko"},
-  "line_gap": 0.08,
+  "speed": 1.25,
+  "max_pause": 0.15,
+  "voicebox": {"profile_id": "814e0079-8a40-415e-bf17-485da5f689c1", "language": "ko", "seed": 7},
+  "line_gap": 0.04,
   "subtitle_y": 0.74,
-  "sfx_gain": 0.8,
+  "sfx_gain": 0.65,
   "bgm_gain": 0.1,
   "scenes": [
     {
       "id": "S1",
-      "lines": ["욕실 모서리에. 이런 쇠 막대. 보이시죠.", "이게 없는 집은. 수십만 원을. 더 쓴 집일 수 있습니다."],
+      "lines": ["욕실 모서리에. 이런 쇠 막대. 보이시죠.", "이게 없는 집은. 돈을. 더 쓴 집일 수 있습니다."],
       "graphics": [{"type": "circle", "x": 0.57, "y": 0.45, "r": 0.14, "line": 0, "offset": 0.6}],
       "sfx": [{"name": "ting"}]
     },
@@ -24,7 +25,7 @@
     {
       "id": "S3",
       "lines": ["그런데. 이 뚜껑 없이. 모서리를 끝내는 방법이 있습니다.", "바로. 졸리컷."],
-      "pad": 0.7,
+      "pad": 0.5,
       "graphics": [{"type": "badge", "text": "졸리컷", "y": 0.2, "line": 1, "offset": 0.2}],
       "sfx": [{"name": "swoosh", "line": 0}, {"name": "impact", "line": 1, "offset": 0.3}]
     },
@@ -36,10 +37,11 @@
     },
     {
       "id": "S5",
+      "clip_speed": 1.6,
       "lines": ["타일 끝을. 사십오 도로 갈아서. 모서리에서 맞붙이는 거죠.", "그래서 이음매가. 선 하나로만 보입니다."],
       "graphics": [
-        {"type": "dimension", "x1": 0.72, "y1": 0.63, "x2": 0.93, "y2": 0.51, "text": "45°", "line": 0, "offset": 0.6, "duration": 3.8},
-        {"type": "line", "x1": 0.49, "y1": 0.03, "x2": 0.505, "y2": 0.47, "width": 6, "line": 0, "offset": 4.45}
+        {"type": "dimension", "x1": 0.72, "y1": 0.63, "x2": 0.93, "y2": 0.51, "text": "45°", "line": 0, "offset": 0.4, "duration": 2.0},
+        {"type": "line", "x1": 0.49, "y1": 0.03, "x2": 0.505, "y2": 0.47, "width": 6, "line": 1, "offset": 0.5}
       ],
       "sfx": [{"name": "grinder", "line": 0, "offset": 0.2, "gain": 0.6}, {"name": "tick", "line": 1, "offset": 0.3}]
     },
@@ -50,8 +52,8 @@
     },
     {
       "id": "S7",
-      "lines": ["대신. 대가가 있습니다.", "첫째. 돈.", "타일을 한 장씩 갈아야 해서. 시공비가. 최대 두 배까지 오릅니다."],
-      "graphics": [{"type": "badge", "text": "시공비 최대 ×2", "y": 0.22, "line": 2, "offset": 1.2}],
+      "lines": ["대신. 대가가 있습니다.", "첫째. 돈.", "타일을 한 장씩 갈아야 해서. 시공비가. 확 올라갑니다."],
+      "graphics": [{"type": "badge", "text": "시공비 ↑", "y": 0.22, "line": 2, "offset": 1.2}],
       "sfx": [{"name": "tick", "line": 1}, {"name": "impact", "line": 2, "offset": 1.2, "gain": 0.6}]
     },
     {
@@ -77,7 +79,9 @@
     {
       "id": "S11",
       "clip": "S1",
-      "lines": ["이제. 남의 집 욕실에 가면.", "모서리부터. 보게 되실 겁니다.", "욕실 모서리에. 이런 쇠 막대."]
+      "clip_reverse": true,
+      "clip_speed": 4,
+      "lines": ["이제. 남의 집 욕실에 가면.", "모서리부터. 보게 되실 겁니다."]
     }
   ]
 }

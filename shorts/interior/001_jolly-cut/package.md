@@ -15,7 +15,7 @@
 
 ```
 욕실 모서리에. 이런 쇠 막대. 보이시죠.
-이게 없는 집은. 수십만 원을. 더 쓴 집일 수 있습니다.
+이게 없는 집은. 돈을. 더 쓴 집일 수 있습니다.
 
 이 막대 이름은. 코너비드.
 타일 두 장이 만나는 모서리를. 덮어 주는. 뚜껑입니다.
@@ -32,7 +32,7 @@
 
 대신. 대가가 있습니다.
 첫째. 돈.
-타일을 한 장씩 갈아야 해서. 시공비가. 최대 두 배까지 오릅니다.
+타일을 한 장씩 갈아야 해서. 시공비가. 확 올라갑니다.
 둘째. 깨짐.
 얇게 갈린 모서리는. 세게 부딪히면. 이가 나갈 수 있습니다.
 가공하다 깨지는 타일도 많아서. 타일도. 넉넉히 사야 하고요.
@@ -66,7 +66,7 @@
 | S4 | 액자 틀 모서리… 바로 그겁니다 | 나무 액자 틀 두 조각이 45도로 잘려 맞붙는 장면 | `Two wooden picture frame pieces with 45 degree mitered ends slide together and join perfectly at the corner, macro shot, warm light, clean workbench` |
 | S5 | 타일 끝을 사십오 도로 갈아서… 선 하나로만 | 그라인더로 타일 모서리를 비스듬하게 가는 클로즈업 → 두 장이 맞붙음 | `Close-up of a wet tile grinder beveling the edge of a porcelain tile at 45 degrees, fine water spray, then two beveled tiles join at an outer corner forming a clean single line` |
 | S6 | 마치 돌덩어리 하나를 통째로 깎은 것처럼요 | 완성된 욕실 모서리를 천천히 돌아가는 고급스러운 샷 | `Slow orbit around a luxurious bathroom wall corner finished with mitered porcelain tiles, looks like a single carved stone block, marble texture, elegant lighting` |
-| S7 | 첫째. 돈… 두 배까지 오릅니다 | 타일 더미 위로 비용이 쌓이는 느낌 (동전/지폐는 편집에서 그래픽으로) | `A stack of porcelain tiles on a construction site floor, each tile being picked up one by one, time-lapse feel, dusty warm light` |
+| S7 | 첫째. 돈… 확 올라갑니다 | 타일 더미 위로 비용이 쌓이는 느낌 (동전/지폐는 편집에서 그래픽으로) | `A stack of porcelain tiles on a construction site floor, each tile being picked up one by one, time-lapse feel, dusty warm light` |
 | S8 | 둘째. 깨짐… 넉넉히 사야 하고요 | 얇게 갈린 모서리가 톡 부딪혀 작은 조각이 튀는 슬로모션 | `Extreme slow motion of a thin beveled tile corner being bumped by a small object, a tiny chip breaking off, macro lens, dramatic side light` |
 | S9 | 셋째. 시간… 공사가 길어집니다 | 창밖 빛이 낮→밤으로 바뀌는 타임랩스, 공사 중인 욕실 | `Time-lapse of an unfinished bathroom renovation, daylight through the window shifts from morning to night, tools and tile pieces on the floor` |
 | S10 | 그래서 이렇게 나눠 쓰는 집이… 코너비드 | 화면 분할 느낌: 창가 쪽 모서리는 매끈, 출입구 모서리는 코너비드 | `Wide shot of a modern bathroom showing two outer wall corners, the corner near the vanity has a seamless mitered tile edge, the corner near the doorway has a thin metal corner bead, even lighting` |
@@ -81,7 +81,7 @@
 | S1 | 빨간 원으로 코너비드 표시 + 텍스트 `코너비드` |
 | S4~S5 | 빨간 치수선 + 각도 표시 `45°` (두 조각 각각) |
 | S5 끝 | 이음매를 따라 빨간 얇은 선 한 줄 |
-| S7 | `시공비 최대 ×2` 숫자가 튀어나옴 |
+| S7 | `시공비 ↑` 배지가 튀어나옴 |
 | S8 | 깨지는 순간 빨간 테두리 깜빡임 |
 | S10 | 왼쪽 `졸리컷` / 오른쪽 `코너비드` 라벨 |
 
@@ -107,6 +107,6 @@
 ## 5. 사실 확인 메모 (검수용)
 
 - 졸리컷 = 타일 모서리를 45도(이상)로 연마해 바깥 모서리에서 맞붙이는 마감. 코너비드보다 깔끔하지만 가공비와 파손(로스)이 늘어남 — [고강타일 블로그](https://inblog.ai/gogangtile/pros-and-cons-of-jolly-trim-porcelain-tile)
-- 시공비 "일반 대비 1.5~2배", "화장실 한 칸당 약 40만 원 추가 사례" — 검색 요약 기준, 업체·지역·타일 크기에 따라 다름 — [뽐뿌 인테리어 게시판](https://m.ppomppu.co.kr/new/bbs_view.php?id=interior&no=13532)
+- 시공비 "1.5~2배", "한 칸당 약 40만 원 추가"는 커뮤니티 글 제목·검색 요약뿐이고 원문 확인 불가(403). 고강타일·LX Z:IN 글에도 수치 없음 → **대본에서 숫자 뺌** ("돈을 더 쓴", "확 올라갑니다") — [뽐뿌 글](https://m.ppomppu.co.kr/new/bbs_view.php?id=interior&no=13532), [LX Z:IN](https://www.lxzin.com/styling/style-guide/detail/1201)
 - **시공 기간은 구체적 수치 출처를 찾지 못함** → 대본에는 숫자 없이 "길어진다"로만 표현함
 - "보이는 곳은 졸리컷, 손 닿는 곳은 코너비드"는 파손 위험에서 나온 일반적인 절충안 표현. 단정하지 않도록 "나눠 쓰는 집이 많다"로 씀

@@ -103,8 +103,15 @@ def load_wav(path):
     return data.astype(np.float32) / 32768
 
 
-def to_wav(src, dst, speed=1.0):
-    af = ["-af", f"atempo={speed}"] if speed != 1.0 else []
+def to_wav(src, dst, speed=1.0, max_pause=None):
+    """max_pause(초): 대사 앞뒤 무음을 자르고, 중간 쉼이 이보다 길면 이 길이로 줄인다."""
+    filters = []
+    if max_pause:
+        filters.append(f"silenceremove=start_periods=1:start_threshold=-35dB:"
+                       f"stop_periods=-1:stop_duration={max_pause}:stop_silence={max_pause}:stop_threshold=-35dB")
+    if speed != 1.0:
+        filters.append(f"atempo={speed}")
+    af = ["-af", ",".join(filters)] if filters else []
     run(["-i", src, *af, "-ac", "1", "-ar", SR, "-sample_fmt", "s16", dst])
     return load_wav(dst)
 
@@ -136,17 +143,30 @@ def _voicebox(text, vb, out):
         gid = info.get("id") or info.get("generation_id")
         if not gid:
             sys.exit(f"Voicebox 응답에서 작업 id를 찾지 못했습니다: {info}")
+        gid = urllib.parse.quote(str(gid))
+        # 실제 Voicebox는 status="generating"으로 바로 답하고,
+        # GET /generate/{id}/status 가 "data: {...status...}" (SSE) 로 진행 상태를 알려준다.
+        status = str(info.get("status", ""))
         for _ in range(600):
+            if status == "completed":
+                break
+            if status in ("failed", "error", "cancelled"):
+                sys.exit(f"Voicebox 생성 실패({status}): {text}")
+            time.sleep(1)
             try:
-                ctype, blob = _http("GET", f"{base}/audio/{urllib.parse.quote(str(gid))}")
-                if _is_audio(ctype, blob):
-                    break
+                _, raw = _http("GET", f"{base}/generate/{gid}/status", timeout=60)
+                found = re.findall(r'"status"\s*:\s*"(\w+)"', raw.decode("utf-8", "ignore"))
+                status = found[-1] if found else status
             except urllib.error.HTTPError as e:
                 if e.code not in (404, 409, 425, 202):
                     raise
-            time.sleep(1)
+            except (TimeoutError, OSError):  # 상태 스트림이 오래 열려 있으면 다시 묻는다
+                pass
         else:
             sys.exit(f"Voicebox 음성이 10분 안에 준비되지 않았습니다: {text}")
+        ctype, blob = _http("GET", f"{base}/audio/{gid}")
+        if not _is_audio(ctype, blob):
+            sys.exit(f"Voicebox 음성 파일을 받지 못했습니다: {text}")
     out.write_bytes(blob)
 
 
@@ -172,7 +192,7 @@ def narrate(lines, cfg, work, mode, voice_dir=None):
             found = [p for p in Path(voice_dir).glob(f"L{i:03d}.*") if p.suffix.lower() in (".wav", ".mp3", ".flac", ".ogg")]
             if not found:
                 sys.exit(f"음성 파일이 없습니다: {voice_dir}/L{i:03d}.wav  ({text})")
-            voices.append(to_wav(found[0], work / f"files_L{i:03d}.wav", cfg["speed"]))
+            voices.append(to_wav(found[0], work / f"files_L{i:03d}.wav", cfg["speed"], cfg.get("max_pause")))
             continue
         # 대사·목소리 설정이 바뀌면 캐시도 새로 만든다
         key = hashlib.sha1(json.dumps([mode, text, cfg["voice"], cfg["rate"], cfg.get("voicebox")],
@@ -197,7 +217,8 @@ def narrate(lines, cfg, work, mode, voice_dir=None):
                 hint = "Voicebox 앱이 켜져 있는지 확인하세요." if mode == "voicebox" else "인터넷 연결을 확인하세요."
                 sys.exit(f"음성 생성 실패: {text}\n{hint} 화면만 먼저 보려면 --tts silent")
         speed = cfg["speed"] if mode == "voicebox" else 1.0
-        voices.append(to_wav(audio, work / f"{mode}_L{i:03d}.wav", speed))
+        voices.append(to_wav(audio, work / f"{mode}_L{i:03d}.wav", speed,
+                             cfg.get("max_pause") if mode == "voicebox" else None))
     return voices
 
 
@@ -316,7 +337,7 @@ def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name",
           voicebox_url="http://127.0.0.1:17493", voicebox_profile=None, voice_dir=None):
     ep = json.loads(Path(ep_path).read_text(encoding="utf-8"))
     cfg = {"voice": ep.get("voice", "ko-KR-InJoonNeural"), "rate": ep.get("rate", "+25%"),
-           "speed": ep.get("speed", 1.0), "voicebox": {**ep.get("voicebox", {}), "url": voicebox_url}}
+           "speed": ep.get("speed", 1.0), "max_pause": ep.get("max_pause"), "voicebox": {**ep.get("voicebox", {}), "url": voicebox_url}}
     if voicebox_profile:
         cfg["voicebox"]["profile_id"] = voicebox_profile
     if tts_mode == "voicebox" and not cfg["voicebox"].get("profile_id"):
@@ -359,8 +380,10 @@ def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name",
     parts = []
     for i, (s, (st, en, _)) in enumerate(zip(scenes, timeline)):
         need, src = en - st, clips[s.get("clip", s["id"])]
-        slow = max(1.0, need / max(media_duration(src) - 0.05, 0.1))
-        vf = (f"setpts={slow:.4f}*PTS,scale={W}:{H}:force_original_aspect_ratio=increase,"
+        speed = s.get("clip_speed", 1.0)  # 1보다 크면 장면 영상을 빨리 돌림 (원하는 컷이 대사 안에 오도록)
+        slow = max(1.0, need / max((media_duration(src) - 0.05) / speed, 0.1))
+        rev = "reverse," if s.get("clip_reverse") else ""  # 거꾸로 재생 (반복 재생 이음새 맞추기)
+        vf = (f"{rev}setpts={slow / speed:.4f}*PTS,scale={W}:{H}:force_original_aspect_ratio=increase,"
               f"crop={W}:{H},fps={FPS},tpad=stop_mode=clone:stop_duration=2,trim=duration={need:.3f},"
               f"setsar=1,format=yuv420p")
         part = work / f"part{i:02d}.mp4"
