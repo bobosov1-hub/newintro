@@ -1,0 +1,80 @@
+{
+  "title": "졸리컷",
+  "voice": "ko-KR-InJoonNeural",
+  "rate": "+25%",
+  "line_gap": 0.08,
+  "subtitle_y": 0.74,
+  "sfx_gain": 0.8,
+  "bgm_gain": 0.1,
+  "scenes": [
+    {
+      "id": "S1",
+      "lines": ["욕실 모서리에. 이런 쇠 막대. 보이시죠.", "이게 없는 집은. 수십만 원을. 더 쓴 집일 수 있습니다."],
+      "graphics": [{"type": "circle", "x": 0.5, "y": 0.45, "r": 0.14, "line": 0, "offset": 0.6}],
+      "sfx": [{"name": "ting"}]
+    },
+    {
+      "id": "S2",
+      "lines": ["이 막대 이름은. 코너비드.", "타일 두 장이 만나는 모서리를. 덮어 주는. 뚜껑입니다."],
+      "graphics": [{"type": "label", "text": "코너비드", "y": 0.2, "line": 0, "offset": 0.5}],
+      "sfx": [{"name": "click", "line": 0, "offset": 0.5}]
+    },
+    {
+      "id": "S3",
+      "lines": ["그런데. 이 뚜껑 없이. 모서리를 끝내는 방법이 있습니다.", "바로. 졸리컷."],
+      "graphics": [{"type": "badge", "text": "졸리컷", "y": 0.2, "line": 1, "offset": 0.3}],
+      "sfx": [{"name": "swoosh", "line": 0}, {"name": "impact", "line": 1, "offset": 0.3}]
+    },
+    {
+      "id": "S4",
+      "lines": ["액자 틀 모서리. 보신 적 있으시죠.", "나무 두 개를. 비스듬하게 잘라서. 딱 맞붙입니다.", "졸리컷이. 바로 그겁니다."],
+      "graphics": [{"type": "label", "text": "45°  +  45°", "y": 0.2, "line": 1, "offset": 0.4}],
+      "sfx": [{"name": "click", "line": 1, "offset": 1.4}]
+    },
+    {
+      "id": "S5",
+      "lines": ["타일 끝을. 사십오 도로 갈아서. 모서리에서 맞붙이는 거죠.", "그래서 이음매가. 선 하나로만 보입니다."],
+      "graphics": [
+        {"type": "dimension", "x1": 0.3, "y1": 0.55, "x2": 0.55, "y2": 0.3, "text": "45°", "line": 0, "offset": 0.6},
+        {"type": "line", "x1": 0.5, "y1": 0.15, "x2": 0.5, "y2": 0.65, "width": 6, "line": 1}
+      ],
+      "sfx": [{"name": "grinder", "line": 0, "offset": 0.2, "gain": 0.6}, {"name": "tick", "line": 1, "offset": 0.3}]
+    },
+    {
+      "id": "S6",
+      "lines": ["마치. 돌덩어리 하나를. 통째로 깎은 것처럼요."],
+      "sfx": [{"name": "ting", "offset": 0.2, "gain": 0.6}]
+    },
+    {
+      "id": "S7",
+      "lines": ["대신. 대가가 있습니다.", "첫째. 돈.", "타일을 한 장씩 갈아야 해서. 시공비가. 최대 두 배까지 오릅니다."],
+      "graphics": [{"type": "badge", "text": "시공비 최대 ×2", "y": 0.22, "line": 2, "offset": 1.2}],
+      "sfx": [{"name": "tick", "line": 1}, {"name": "impact", "line": 2, "offset": 1.2, "gain": 0.6}]
+    },
+    {
+      "id": "S8",
+      "lines": ["둘째. 깨짐.", "얇게 갈린 모서리는. 세게 부딪히면. 이가 나갈 수 있습니다.", "가공하다 깨지는 타일도 많아서. 타일도. 넉넉히 사야 하고요."],
+      "graphics": [{"type": "flash", "line": 1, "offset": 1.8, "duration": 0.35}],
+      "sfx": [{"name": "tick"}, {"name": "crack", "line": 1, "offset": 1.8}]
+    },
+    {
+      "id": "S9",
+      "lines": ["셋째. 시간.", "모서리마다. 갈고. 맞추고. 그만큼. 공사가 길어집니다."],
+      "sfx": [{"name": "tick"}, {"name": "clock", "line": 1, "offset": 0.3, "gain": 0.7}]
+    },
+    {
+      "id": "S10",
+      "lines": ["그래서. 이렇게 나눠 쓰는 집이 많습니다.", "눈에 제일 잘 보이는 곳은. 졸리컷.", "손이 자주 닿는 곳은. 코너비드."],
+      "graphics": [
+        {"type": "label", "text": "잘 보이는 곳 = 졸리컷", "y": 0.16, "line": 1},
+        {"type": "label", "text": "손 닿는 곳 = 코너비드", "y": 0.27, "line": 2}
+      ],
+      "sfx": [{"name": "click", "line": 1}, {"name": "click", "line": 2}]
+    },
+    {
+      "id": "S11",
+      "clip": "S1",
+      "lines": ["이제. 남의 집 욕실에 가면.", "모서리부터. 보게 되실 겁니다.", "욕실 모서리에. 이런 쇠 막대."]
+    }
+  ]
+}
