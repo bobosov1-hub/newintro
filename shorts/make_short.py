@@ -62,7 +62,7 @@ def pick_font(path=None):
 
 # ---------------------------------------------------------------- 장면 파일 찾기
 
-def match_clips(clip_dir, scene_ids):
+def match_clips(clip_dir, scene_ids, order="name"):
     scene_ids = list(dict.fromkeys(scene_ids))  # S11처럼 앞 장면을 다시 쓰는 경우 중복 제거
     files = sorted(p for p in Path(clip_dir).iterdir() if p.suffix.lower() in VIDEO_EXT)
     if not files:
@@ -74,11 +74,12 @@ def match_clips(clip_dir, scene_ids):
     def natural(p):
         return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", p.name.lower())]
 
-    files.sort(key=natural)
+    files.sort(key=(lambda p: p.stat().st_mtime) if order == "mtime" else natural)
     if len(files) < len(scene_ids):
         print(f"주의: 장면 {len(scene_ids)}개에 영상 {len(files)}개 — 모자란 장면은 앞 영상을 다시 씁니다.")
     mapping = {sid: files[i % len(files)] for i, sid in enumerate(scene_ids)}
-    print("파일 이름이 S1, S2... 가 아니라서 이름 순서대로 짝지었습니다:")
+    how = "다운로드(수정) 시각" if order == "mtime" else "이름"
+    print(f"파일 이름이 S1, S2... 가 아니라서 {how} 순서대로 짝지었습니다:")
     for sid, p in mapping.items():
         print(f"  {sid:>4} <- {p.name}")
     return mapping
@@ -113,8 +114,20 @@ def narrate(lines, cfg, work, mode):
             voices.append(np.zeros(int(dur * SR), np.float32))
             continue
         mp3 = work / f"L{i:03d}.mp3"
-        if not mp3.exists():
-            asyncio.run(_edge_tts(text, cfg["voice"], cfg["rate"], mp3))
+        if not mp3.exists() or mp3.stat().st_size == 0:
+            # 임시 파일에 받은 뒤 옮겨서, 실패해도 빈 파일이 캐시에 남지 않게 한다
+            tmp = mp3.with_suffix(".part")
+            for attempt in range(3):
+                try:
+                    asyncio.run(_edge_tts(text, cfg["voice"], cfg["rate"], tmp))
+                    if tmp.exists() and tmp.stat().st_size > 0:
+                        tmp.replace(mp3)
+                        break
+                except Exception as e:  # 네트워크 오류 등
+                    print(f"  음성 생성 재시도 {attempt + 1}/3 ({text[:12]}…): {e}")
+            else:
+                tmp.unlink(missing_ok=True)
+                sys.exit(f"음성 생성 실패: {text}\n인터넷 연결을 확인하거나 --tts silent 로 먼저 화면만 확인하세요.")
         voices.append(to_wav(mp3, work / f"L{i:03d}.wav"))
     return voices
 
@@ -230,7 +243,7 @@ def graphic_png(g, font_path, out):
 
 # ---------------------------------------------------------------- 조립
 
-def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm):
+def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name"):
     ep = json.loads(Path(ep_path).read_text(encoding="utf-8"))
     cfg = {"voice": ep.get("voice", "ko-KR-InJoonNeural"), "rate": ep.get("rate", "+25%")}
     gap = ep.get("line_gap", 0.08)
@@ -241,7 +254,7 @@ def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm):
     print(f"작업 폴더: {work}")
 
     scenes = ep["scenes"]
-    clips = match_clips(clip_dir, [s.get("clip", s["id"]) for s in scenes])
+    clips = match_clips(clip_dir, [s.get("clip", s["id"]) for s in scenes], order)
     all_lines = [ln for s in scenes for ln in s["lines"]]
     voices = narrate(all_lines, cfg, tts_dir, tts_mode)
 
@@ -349,9 +362,11 @@ def main():
     ap.add_argument("--font", help="자막 글꼴 .ttf (기본: 맑은 고딕 Bold)")
     ap.add_argument("--sfx-dir", help="효과음 폴더 (ting.wav 같은 이름이 있으면 합성음 대신 사용)")
     ap.add_argument("--bgm", help="배경음악 파일")
+    ap.add_argument("--order", choices=["name", "mtime"], default="name",
+                    help="파일 이름이 S1..이 아닐 때 짝짓는 순서 (mtime=다운로드한 순서)")
     a = ap.parse_args()
     out = a.out or str(Path(a.episode).parent / "output" / "final.mp4")
-    build(a.episode, a.clips, out, a.tts, a.font, a.sfx_dir, a.bgm)
+    build(a.episode, a.clips, out, a.tts, a.font, a.sfx_dir, a.bgm, a.order)
 
 
 if __name__ == "__main__":
