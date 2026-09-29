@@ -2,6 +2,8 @@
   "title": "졸리컷",
   "voice": "ko-KR-InJoonNeural",
   "rate": "+25%",
+  "speed": 1.2,
+  "voicebox": {"profile_id": "", "language": "ko"},
   "line_gap": 0.08,
   "subtitle_y": 0.74,
   "sfx_gain": 0.8,

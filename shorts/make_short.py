@@ -11,6 +11,7 @@ TTS 내레이션, 자막, 빨간 그래픽, 효과음을 얹은 1080x1920 완성
 
 import argparse
 import asyncio
+import hashlib
 import json
 import math
 import os
@@ -18,6 +19,10 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
 import wave
 from pathlib import Path
 
@@ -104,8 +109,58 @@ def to_wav(src, dst, speed=1.0):
     return load_wav(dst)
 
 
-def narrate(lines, cfg, work, mode):
-    """줄마다 음성 배열을 돌려준다. mode='silent'는 글자 수로 길이를 추정한 무음(테스트용)."""
+_LOCAL = urllib.request.build_opener(urllib.request.ProxyHandler({}))  # 로컬 앱이라 프록시를 거치지 않음
+
+
+def _http(method, url, body=None, timeout=300):
+    data = json.dumps(body).encode() if body is not None else None
+    req = urllib.request.Request(url, data=data, method=method,
+                                 headers={"Content-Type": "application/json"} if data else {})
+    with _LOCAL.open(req, timeout=timeout) as r:
+        return r.headers.get("Content-Type", ""), r.read()
+
+
+def _is_audio(ctype, blob):
+    return ctype.startswith("audio/") or blob[:4] in (b"RIFF", b"OggS", b"fLaC", b"ID3\x03", b"ID3\x04") \
+        or blob[:2] == b"\xff\xfb"
+
+
+def _voicebox(text, vb, out):
+    """Voicebox 로컬 API: POST /generate → 작업 id → GET /audio/{id} 가 준비될 때까지 기다린다."""
+    base = vb["url"].rstrip("/")
+    body = {"text": text, "profile_id": vb["profile_id"], "language": vb.get("language", "ko"),
+            **{k: v for k, v in vb.items() if k not in ("url", "profile_id", "language")}}
+    ctype, blob = _http("POST", f"{base}/generate", body)
+    if not _is_audio(ctype, blob):
+        info = json.loads(blob)
+        gid = info.get("id") or info.get("generation_id")
+        if not gid:
+            sys.exit(f"Voicebox 응답에서 작업 id를 찾지 못했습니다: {info}")
+        for _ in range(600):
+            try:
+                ctype, blob = _http("GET", f"{base}/audio/{urllib.parse.quote(str(gid))}")
+                if _is_audio(ctype, blob):
+                    break
+            except urllib.error.HTTPError as e:
+                if e.code not in (404, 409, 425, 202):
+                    raise
+            time.sleep(1)
+        else:
+            sys.exit(f"Voicebox 음성이 10분 안에 준비되지 않았습니다: {text}")
+    out.write_bytes(blob)
+
+
+def voicebox_profiles(url):
+    _, blob = _http("GET", url.rstrip("/") + "/profiles", timeout=10)
+    profiles = json.loads(blob)
+    profiles = profiles.get("profiles", profiles) if isinstance(profiles, dict) else profiles
+    return [(p.get("id"), p.get("name")) for p in profiles]
+
+
+def narrate(lines, cfg, work, mode, voice_dir=None):
+    """줄마다 음성 배열을 돌려준다.
+    edge=마이크로소프트 무료 음성, voicebox=PC의 Voicebox 앱, files=직접 만든 L000.wav ... 파일,
+    silent=글자 수로 길이를 추정한 무음(화면 확인용)."""
     voices = []
     for i, text in enumerate(lines):
         if mode == "silent":
@@ -113,22 +168,36 @@ def narrate(lines, cfg, work, mode):
             dur = 0.3 + syllables * 0.11 + text.count(".") * 0.12
             voices.append(np.zeros(int(dur * SR), np.float32))
             continue
-        mp3 = work / f"L{i:03d}.mp3"
-        if not mp3.exists() or mp3.stat().st_size == 0:
+        if mode == "files":
+            found = [p for p in Path(voice_dir).glob(f"L{i:03d}.*") if p.suffix.lower() in (".wav", ".mp3", ".flac", ".ogg")]
+            if not found:
+                sys.exit(f"음성 파일이 없습니다: {voice_dir}/L{i:03d}.wav  ({text})")
+            voices.append(to_wav(found[0], work / f"files_L{i:03d}.wav", cfg["speed"]))
+            continue
+        # 대사·목소리 설정이 바뀌면 캐시도 새로 만든다
+        key = hashlib.sha1(json.dumps([mode, text, cfg["voice"], cfg["rate"], cfg.get("voicebox")],
+                                      ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:10]
+        audio = work / f"{mode}_L{i:03d}_{key}.audio"
+        if not audio.exists() or audio.stat().st_size == 0:
             # 임시 파일에 받은 뒤 옮겨서, 실패해도 빈 파일이 캐시에 남지 않게 한다
-            tmp = mp3.with_suffix(".part")
+            tmp = audio.with_suffix(".part")
             for attempt in range(3):
                 try:
-                    asyncio.run(_edge_tts(text, cfg["voice"], cfg["rate"], tmp))
+                    if mode == "voicebox":
+                        _voicebox(text, cfg["voicebox"], tmp)
+                    else:
+                        asyncio.run(_edge_tts(text, cfg["voice"], cfg["rate"], tmp))
                     if tmp.exists() and tmp.stat().st_size > 0:
-                        tmp.replace(mp3)
+                        tmp.replace(audio)
                         break
-                except Exception as e:  # 네트워크 오류 등
+                except Exception as e:  # 네트워크 오류, 앱 꺼짐 등
                     print(f"  음성 생성 재시도 {attempt + 1}/3 ({text[:12]}…): {e}")
             else:
                 tmp.unlink(missing_ok=True)
-                sys.exit(f"음성 생성 실패: {text}\n인터넷 연결을 확인하거나 --tts silent 로 먼저 화면만 확인하세요.")
-        voices.append(to_wav(mp3, work / f"L{i:03d}.wav"))
+                hint = "Voicebox 앱이 켜져 있는지 확인하세요." if mode == "voicebox" else "인터넷 연결을 확인하세요."
+                sys.exit(f"음성 생성 실패: {text}\n{hint} 화면만 먼저 보려면 --tts silent")
+        speed = cfg["speed"] if mode == "voicebox" else 1.0
+        voices.append(to_wav(audio, work / f"{mode}_L{i:03d}.wav", speed))
     return voices
 
 
@@ -243,9 +312,24 @@ def graphic_png(g, font_path, out):
 
 # ---------------------------------------------------------------- 조립
 
-def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name"):
+def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name",
+          voicebox_url="http://127.0.0.1:17493", voicebox_profile=None, voice_dir=None):
     ep = json.loads(Path(ep_path).read_text(encoding="utf-8"))
-    cfg = {"voice": ep.get("voice", "ko-KR-InJoonNeural"), "rate": ep.get("rate", "+25%")}
+    cfg = {"voice": ep.get("voice", "ko-KR-InJoonNeural"), "rate": ep.get("rate", "+25%"),
+           "speed": ep.get("speed", 1.0), "voicebox": {**ep.get("voicebox", {}), "url": voicebox_url}}
+    if voicebox_profile:
+        cfg["voicebox"]["profile_id"] = voicebox_profile
+    if tts_mode == "voicebox" and not cfg["voicebox"].get("profile_id"):
+        try:
+            profiles = voicebox_profiles(voicebox_url)
+        except Exception as e:
+            sys.exit(f"Voicebox({voicebox_url})에 연결하지 못했습니다. 앱을 켜 두세요. ({e})")
+        print("쓸 목소리를 --voicebox-profile <id> 로 고르거나 episode.json의 voicebox.profile_id에 넣으세요:")
+        for pid, name in profiles:
+            print(f"  {pid}  {name}")
+        sys.exit(1)
+    if tts_mode == "files" and not voice_dir:
+        sys.exit("--tts files 는 --voice-dir 폴더가 필요합니다 (L000.wav, L001.wav ...).")
     gap = ep.get("line_gap", 0.08)
     font = pick_font(font)
     work = Path(tempfile.mkdtemp(prefix="short_"))
@@ -256,7 +340,7 @@ def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name"):
     scenes = ep["scenes"]
     clips = match_clips(clip_dir, [s.get("clip", s["id"]) for s in scenes], order)
     all_lines = [ln for s in scenes for ln in s["lines"]]
-    voices = narrate(all_lines, cfg, tts_dir, tts_mode)
+    voices = narrate(all_lines, cfg, tts_dir, tts_mode, voice_dir)
 
     # 줄별 시작 시각 계산
     t, li, timeline = 0.0, 0, []
@@ -358,8 +442,12 @@ def main():
     ap.add_argument("episode", help="episode.json 경로")
     ap.add_argument("--clips", required=True, help="장면 영상 폴더")
     ap.add_argument("--out", help="출력 mp4 (기본: episode.json 옆 output/final.mp4)")
-    ap.add_argument("--tts", choices=["edge", "silent"], default="edge",
-                    help="edge=마이크로소프트 무료 음성(인터넷 필요), silent=무음 테스트")
+    ap.add_argument("--tts", choices=["edge", "voicebox", "files", "silent"], default="edge",
+                    help="edge=마이크로소프트 무료 음성, voicebox=PC의 Voicebox 앱, "
+                         "files=직접 만든 음성 파일(--voice-dir), silent=무음 테스트")
+    ap.add_argument("--voicebox-url", default="http://127.0.0.1:17493", help="Voicebox 로컬 API 주소")
+    ap.add_argument("--voicebox-profile", help="Voicebox 목소리 id (비우면 목록을 보여줌)")
+    ap.add_argument("--voice-dir", help="--tts files 일 때 L000.wav, L001.wav ... 가 있는 폴더")
     ap.add_argument("--font", help="자막 글꼴 .ttf (기본: 맑은 고딕 Bold)")
     ap.add_argument("--sfx-dir", help="효과음 폴더 (ting.wav 같은 이름이 있으면 합성음 대신 사용)")
     ap.add_argument("--bgm", help="배경음악 파일")
@@ -367,7 +455,8 @@ def main():
                     help="파일 이름이 S1..이 아닐 때 짝짓는 순서 (mtime=다운로드한 순서)")
     a = ap.parse_args()
     out = a.out or str(Path(a.episode).parent / "output" / "final.mp4")
-    build(a.episode, a.clips, out, a.tts, a.font, a.sfx_dir, a.bgm, a.order)
+    build(a.episode, a.clips, out, a.tts, a.font, a.sfx_dir, a.bgm, a.order,
+          a.voicebox_url, a.voicebox_profile, a.voice_dir)
 
 
 if __name__ == "__main__":
