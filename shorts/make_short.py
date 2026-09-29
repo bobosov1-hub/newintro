@@ -266,6 +266,7 @@ def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name"):
             line_starts.append(t)
             t += len(voices[li]) / SR + gap
             li += 1
+        t += s.get("pad", 0)  # 마지막 대사 뒤 여운 (그래픽이 보일 시간 확보)
         timeline.append((start, t, line_starts))
     total = t
     print(f"완성본 길이: {total:.1f}초")

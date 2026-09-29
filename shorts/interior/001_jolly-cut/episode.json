@@ -22,7 +22,8 @@
     {
       "id": "S3",
       "lines": ["그런데. 이 뚜껑 없이. 모서리를 끝내는 방법이 있습니다.", "바로. 졸리컷."],
-      "graphics": [{"type": "badge", "text": "졸리컷", "y": 0.2, "line": 1, "offset": 0.3}],
+      "pad": 0.7,
+      "graphics": [{"type": "badge", "text": "졸리컷", "y": 0.2, "line": 1, "offset": 0.2}],
       "sfx": [{"name": "swoosh", "line": 0}, {"name": "impact", "line": 1, "offset": 0.3}]
     },
     {
