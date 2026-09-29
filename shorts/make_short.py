@@ -271,10 +271,13 @@ def load_sfx(name, sfx_dir, work):
 
 # ---------------------------------------------------------------- 그래픽 (투명 PNG)
 
-def text_png(text, font_path, size, y, out, box=False, color=(255, 255, 255, 255)):
+def text_png(text, font_path, size, y, out, box=False, color=(255, 255, 255, 255), one_line=False):
     img = Image.new("RGBA", (W, H))
     d = ImageDraw.Draw(img)
     font = ImageFont.truetype(font_path, size)
+    while one_line and size > 60 and d.textlength(text, font=font) > W * 0.86:  # 한 줄에 들어가게 글자 줄이기
+        size -= 4
+        font = ImageFont.truetype(font_path, size)
     words, rows, cur = text.split(), [], ""
     for wd in words:  # 화면 폭 86%를 넘으면 줄바꿈
         trial = f"{cur} {wd}".strip()
@@ -296,6 +299,54 @@ def text_png(text, font_path, size, y, out, box=False, color=(255, 255, 255, 255
         d.text((x, yy), row, font=font, fill=color,
                stroke_width=0 if box else max(4, size // 9), stroke_fill=(0, 0, 0, 255))
     img.save(out)
+
+
+def phrase_times(text, voice, start, end, max_chars=12):
+    """대사를 마침표 단위 짧은 구절로 나누고, 음성의 쉼 위치에 맞춰 구절별 표시 구간을 돌려준다."""
+    chunks = [c.strip() for c in text.split(".") if c.strip()]
+    if len(chunks) <= 1:
+        return phrase_split_long(chunks or [text.strip()], [start, end], max_chars)
+    hop = int(SR * 0.02)
+    env = np.array([np.abs(voice[i:i + hop]).max() for i in range(0, max(len(voice) - hop, 1), hop)])
+    quiet = env < max(env.max() * 0.06, 1e-4)
+    runs, i = [], 0  # (길이, 가운데 위치) — 말 시작 전·끝난 뒤 무음은 제외
+    first, last = np.argmax(~quiet), len(quiet) - np.argmax(~quiet[::-1])
+    while i < len(quiet):
+        if quiet[i]:
+            j = i
+            while j < len(quiet) and quiet[j]:
+                j += 1
+            if i > first and j < last:
+                runs.append((j - i, (i + j) / 2 * hop / SR))
+            i = j
+        else:
+            i += 1
+    k = len(chunks) - 1
+    if len(runs) >= k:
+        cuts = sorted(c for _, c in sorted(runs, reverse=True)[:k])
+    else:  # 쉼을 못 찾으면 글자 수 비율로 나눔
+        n = [len(c.replace(" ", "")) for c in chunks]
+        dur = len(voice) / SR
+        cuts = [dur * sum(n[:m + 1]) / sum(n) for m in range(k)]
+    bounds = [start] + [start + c for c in cuts] + [end]
+    return phrase_split_long(chunks, bounds, max_chars)
+
+
+def phrase_split_long(chunks, bounds, max_chars=12):
+    """한 줄에 안 들어갈 만큼 긴 구절은 가운데 띄어쓰기에서 한 번 더 나눈다 (시간은 글자 수 비율)."""
+    out = []
+    for m, c in enumerate(chunks):
+        a, b = bounds[m], bounds[m + 1]
+        words = c.split()
+        if len(c) > max_chars and len(words) > 1:  # 긴 구절은 가운데 띄어쓰기에서 한 번 더 나눔
+            cut = min(range(1, len(words)), key=lambda w: abs(len(" ".join(words[:w])) - len(c) / 2))
+            left, right = " ".join(words[:cut]), " ".join(words[cut:])
+            mid = a + (b - a) * len(left.replace(" ", "")) / len(c.replace(" ", ""))
+            out += [(left, a, mid), (right, mid, b)]
+        else:
+            out.append((c, a, b))
+    return out
+
 
 
 def graphic_png(g, font_path, out):
@@ -402,9 +453,15 @@ def build(ep_path, clip_dir, out, tts_mode, font, sfx_dir, bgm, order="name",
         for k, text in enumerate(s["lines"]):
             a = line_starts[k]
             b = line_starts[k + 1] if k + 1 < len(s["lines"]) else en
-            png = work / f"sub{li:03d}.png"
-            text_png(text.replace(".", "").strip(), font, 78, ep.get("subtitle_y", 0.74), png)
-            overlays.append((png, a, b))
+            if ep.get("subtitle_mode", "phrase") == "phrase":  # 짧은 구절을 한 줄씩
+                pieces = phrase_times(text, voices[li], a, b)
+            else:
+                pieces = [(text.replace(".", "").strip(), a, b)]
+            for m, (piece, pa, pb) in enumerate(pieces):
+                png = work / f"sub{li:03d}_{m}.png"
+                text_png(piece, font, ep.get("subtitle_size", 92), ep.get("subtitle_y", 0.74), png,
+                         one_line=True)
+                overlays.append((png, pa, pb))
             li += 1
         for j, g in enumerate(s.get("graphics", [])):
             a = line_starts[g.get("line", 0)] + g.get("offset", 0)

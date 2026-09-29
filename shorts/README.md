@@ -26,3 +26,13 @@ python shorts/make_short.py shorts/interior/001_jolly-cut/episode.json --clips "
 
 `episode.json`의 `speed`는 Voicebox·files 음성에 적용되는 배속입니다 (edge는 `rate`).
 음성은 `output/_tts_cache`에 저장되어, 대사를 안 바꾼 줄은 다시 만들지 않습니다.
+
+### 자막
+기본은 `"subtitle_mode": "phrase"` — 대사를 마침표 단위 짧은 구절로 나눠 **한 줄씩** 띄웁니다
+(구절 전환 시점은 음성의 쉼 위치에 맞춤, 12자가 넘는 구절은 띄어쓰기에서 한 번 더 나눔).
+문장 통째로 띄우려면 `"subtitle_mode": "line"`, 글자 크기는 `"subtitle_size"`(기본 92).
+
+### 기타 episode.json 옵션
+- `"max_pause"`: 음성 앞뒤 무음을 자르고 중간 쉼을 이 길이(초)로 줄임
+- 장면별 `"clip_speed"`: 장면 영상을 빨리 돌림 (원하는 컷을 대사 안으로 당길 때)
+- 장면별 `"clip_reverse"`: 거꾸로 재생 (마지막 장면을 첫 프레임으로 끝내 반복 재생 이음새 맞추기)
