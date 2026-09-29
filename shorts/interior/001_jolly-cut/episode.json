@@ -10,7 +10,7 @@
     {
       "id": "S1",
       "lines": ["욕실 모서리에. 이런 쇠 막대. 보이시죠.", "이게 없는 집은. 수십만 원을. 더 쓴 집일 수 있습니다."],
-      "graphics": [{"type": "circle", "x": 0.5, "y": 0.45, "r": 0.14, "line": 0, "offset": 0.6}],
+      "graphics": [{"type": "circle", "x": 0.57, "y": 0.45, "r": 0.14, "line": 0, "offset": 0.6}],
       "sfx": [{"name": "ting"}]
     },
     {
@@ -35,8 +35,8 @@
       "id": "S5",
       "lines": ["타일 끝을. 사십오 도로 갈아서. 모서리에서 맞붙이는 거죠.", "그래서 이음매가. 선 하나로만 보입니다."],
       "graphics": [
-        {"type": "dimension", "x1": 0.3, "y1": 0.55, "x2": 0.55, "y2": 0.3, "text": "45°", "line": 0, "offset": 0.6},
-        {"type": "line", "x1": 0.5, "y1": 0.15, "x2": 0.5, "y2": 0.65, "width": 6, "line": 1}
+        {"type": "dimension", "x1": 0.72, "y1": 0.63, "x2": 0.93, "y2": 0.51, "text": "45°", "line": 0, "offset": 0.6, "duration": 3.8},
+        {"type": "line", "x1": 0.49, "y1": 0.03, "x2": 0.505, "y2": 0.47, "width": 6, "line": 0, "offset": 4.45}
       ],
       "sfx": [{"name": "grinder", "line": 0, "offset": 0.2, "gain": 0.6}, {"name": "tick", "line": 1, "offset": 0.3}]
     },
