@@ -4,6 +4,7 @@ Spec coordinates are SCREEN pixels at rest (origin = frame centre); they are con
 units per plane depth so the composition matches the storyboard when the camera is at rest.
 """
 import math
+import os
 
 import numpy as np
 
@@ -86,13 +87,30 @@ def build_scene(spec, build, pool, W=1920, H=1080):
         return layer
 
     ink_page = spec.get("page") == "ink"
-    # 1. the page ------------------------------------------------------------------
-    pw, ph = int(W * D_PAGE * 1.36), int(H * D_PAGE * 1.36)
-    prng = build.rng("page", sid)
-    page_rgb = sheet(ph, pw, prng, base=P.INK if ink_page else P.PAPER, amount=1.0)
-    if not ink_page:
-        page_rgb *= stain(ph, pw, prng, 0.045)[..., None]
-    add(Layer(Sprite(page_rgb, np.ones((ph, pw), np.float32)), D_PAGE, 0, 0, shadow=0, name="page"))
+    picture = spec.get("video") or spec.get("photo")
+    # 1. the page (or a full-bleed moving picture / photograph) ------------------------
+    if picture:
+        from . import ROOT
+        from .photo import VideoLayer, layers as photo_layers
+        if spec.get("video"):
+            v = spec["video"]
+            path = v["src"] if os.path.isabs(v["src"]) else os.path.join(ROOT, v["src"])
+            vl = VideoLayer(path, t0 - 0.7, W, H, D_PAGE, Layer, look=v.get("look", "70s"), cover=float(v.get("cover", 1.10)),
+                            start=float(v.get("start", 0.3)), speed=float(v.get("speed", 1.0)), offset=v.get("offset", (0, 0)))
+            add(vl.layer)
+        else:
+            for lay in photo_layers(spec["photo"], W, H, D_PAGE, 1.02, Layer):
+                add(lay)
+        spec = dict(spec)
+        spec.setdefault("scatter", 0)
+        spec.setdefault("fg", 0)
+    else:
+        pw, ph = int(W * D_PAGE * 1.36), int(H * D_PAGE * 1.36)
+        prng = build.rng("page", sid)
+        page_rgb = sheet(ph, pw, prng, base=P.INK if ink_page else P.PAPER, amount=1.0)
+        if not ink_page:
+            page_rgb *= stain(ph, pw, prng, 0.045)[..., None]
+        add(Layer(Sprite(page_rgb, np.ones((ph, pw), np.float32)), D_PAGE, 0, 0, shadow=0, name="page"))
 
     # 2. background scatter: torn newspaper fragments, low contrast, placed by the seed
     n_sc = spec.get("scatter")
@@ -345,6 +363,8 @@ def build_scene(spec, build, pool, W=1920, H=1080):
     start = spec.get("camera_start", [build.jit(rng, 5, 40), build.jit(rng, 5, 30), 0.0])
     rack = (t0 + 0.1, 1.0, 0.62) if spec.get("rack") else None
     focus = D_LOCK if (hero is None and lock_meta is not None) else D_HERO
+    if picture and hero is None:
+        focus = float(spec.get("focus", D_PAGE))
     cam = Camera(t0, t1 + 1.0, build, sid, drift=spec.get("drift"), beats=beats, focus=focus, rack=rack,
                  start=tuple(start))
     trans = dict(spec.get("transition", {"type": "cut"}))

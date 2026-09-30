@@ -94,3 +94,50 @@ def layers(spec, W, H, d_bg, d_fg, Layer):
         out.append(Layer(Sprite(ph["fg"], ph["a"], None, res=res_fg), d_fg, ox * d_fg, oy * d_fg,
                          shadow=0.35, page=d_bg, name="photo_fg"))
     return out
+
+
+class VideoLayer:
+    """A full-bleed moving picture: decodes its clip lazily (per process) and swaps the layer's
+    sprite every frame. Clip time = scene time - t0 + `start`, played at `speed`."""
+
+    def __init__(self, path, t0, W, H, depth, Layer, look="70s", cover=1.10, start=0.0, speed=1.0, offset=(0, 0)):
+        import cv2 as _cv
+        self.path, self.t0, self.look = path, float(t0), look
+        self.start, self.speed = float(start), float(speed)
+        cap = _cv.VideoCapture(path)
+        self.fps = cap.get(_cv.CAP_PROP_FPS) or 24.0
+        self.n = int(cap.get(_cv.CAP_PROP_FRAME_COUNT))
+        w, h = int(cap.get(_cv.CAP_PROP_FRAME_WIDTH)), int(cap.get(_cv.CAP_PROP_FRAME_HEIGHT))
+        cap.release()
+        scr_w = max(W / w, H / h) * cover * w
+        self.res = w / (scr_w * depth)
+        self._cap, self._pid, self._idx, self._frame = None, None, -1, None
+        blank = np.zeros((h, w, 3), np.float32)
+        self.layer = Layer(Sprite(blank, np.ones((h, w), np.float32), None, res=self.res), depth,
+                           offset[0] * depth, offset[1] * depth, shadow=0, name="video")
+        self.layer.update = self.update
+
+    def _read(self, idx):
+        import cv2 as _cv
+        if self._cap is None or self._pid != os.getpid():
+            self._cap, self._pid, self._idx = _cv.VideoCapture(self.path), os.getpid(), -1
+        if idx < self._idx or idx > self._idx + 48:
+            self._cap.set(_cv.CAP_PROP_POS_FRAMES, idx)
+            self._idx = idx - 1
+        while self._idx < idx:
+            ok, fr = self._cap.read()
+            if not ok:
+                break
+            self._idx += 1
+            self._frame = fr
+        return self._frame
+
+    def update(self, t):
+        idx = int(np.clip((self.start + max(t - self.t0, 0.0) * self.speed) * self.fps, 0, self.n - 1))
+        fr = self._read(idx)
+        if fr is None:
+            return
+        rgb = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
+        rgb = grade(rgb, self.look)
+        h, w = rgb.shape[:2]
+        self.layer.sprite = Sprite(rgb, np.ones((h, w), np.float32), None, res=self.res)

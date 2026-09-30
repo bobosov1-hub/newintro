@@ -120,67 +120,56 @@
  ],
  "scenes": [
   {
-   "id": "s01_hook",
+   "id": "s01_street",
    "transition": {
     "type": "cut"
    },
-   "rack": true,
-   "hero": {
-    "asset": "jj_bowl",
-    "height": 560,
-    "x": 0,
-    "top": -260,
-    "enter": 0.55
-   },
-   "lockup": {
-    "descriptor": "1970년대 초",
-    "title": "값을 못 올리는\n음식",
-    "enter": 0.2,
-    "size": 112,
-    "max_width": 940
+   "video": {
+    "src": "clips/jjajang_1970/01.mp4",
+    "start": 2.0
    },
    "beats": [
     {
-     "t": 1.861,
+     "t": 2.018,
      "type": "push",
-     "amount": 0.07,
-     "dur": 0.6
+     "amount": 0.05,
+     "dur": 0.8
     }
    ],
    "start": 0.0,
    "end": 3.389
   },
   {
-   "id": "s02_menu",
+   "id": "s02_bowl",
    "transition": {
     "type": "push"
    },
-   "hero": {
-    "asset": "jj_menu_1970",
-    "height": 780,
-    "x": 0,
-    "top": -250,
-    "enter": 3.739
+   "video": {
+    "src": "clips/jjajang_1970/02.mp4"
    },
-   "lockup": {
-    "descriptor": "정부가 묶어 둔 값",
-    "title": "짜장면 100원",
-    "enter": 4.573,
-    "size": 104,
-    "at": [
-     0,
-     -420
-    ],
-    "max_width": 940
-   },
+   "support": [
+    {
+     "asset": "jj_menu_1970",
+     "name": "menu",
+     "height": 470,
+     "at": [
+      -250,
+      70
+     ],
+     "rot": -6,
+     "depth": 1.0,
+     "enter": 4.573,
+     "enter_kind": "drop"
+    }
+   ],
    "diagrams": [
     {
      "type": "ring",
-     "on": "hero",
+     "on": "menu",
      "src": "part",
      "r": [
-      280,
-      80
+      180,
+      55
      ],
      "t": 5.915,
      "dur": 0.7
@@ -188,109 +177,69 @@
    ],
    "beats": [
     {
-     "t": 5.765,
+     "t": 5.169,
      "type": "push",
-     "amount": 0.1,
-     "target": "part",
-     "dur": 0.7
+     "amount": 0.05,
+     "dur": 0.6
     }
    ],
    "start": 3.389,
    "end": 7.671
   },
   {
-   "id": "s03_inflation",
+   "id": "s03_market",
    "transition": {
     "type": "slide",
     "dir": "left"
    },
-   "hero": {
-    "asset": "jj_inflation",
-    "height": 620,
-    "x": 0,
-    "top": -230,
-    "enter": 8.949
+   "video": {
+    "src": "clips/jjajang_1970/03.mp4"
    },
-   "lockup": {
-    "descriptor": "그런데 이상하죠?",
-    "title": "물가는 해마다\n10% 넘게",
-    "enter": 7.821,
-    "size": 104,
-    "max_width": 940
-   },
-   "beats": [
+   "support": [
     {
-     "t": 9.776,
-     "type": "push",
-     "amount": 0.08,
-     "dur": 0.7
+     "asset": "jj_inflation",
+     "name": "chart",
+     "height": 360,
+     "at": [
+      250,
+      170
+     ],
+     "rot": 4,
+     "depth": 1.0,
+     "enter": 8.949,
+     "enter_kind": "drop"
     }
    ],
    "start": 7.671,
    "end": 11.216
   },
   {
-   "id": "s04_loss",
+   "id": "s04_cook",
    "transition": {
     "type": "cut"
    },
-   "hero": {
-    "asset": "jj_bowl",
-    "height": 600,
-    "x": 0,
-    "top": -200,
-    "enter": 11.616,
-    "exit": {
-     "t": 14.013,
-     "all": true
-    }
-   },
-   "lockup": {
-    "descriptor": "재료값은 오르는데",
-    "title": "팔수록 손해",
-    "enter": 11.366,
-    "size": 116,
-    "max_width": 940
+   "video": {
+    "src": "clips/jjajang_1970/04.mp4"
    },
    "beats": [
     {
-     "t": 13.176,
-     "type": "pull",
-     "amount": 0.06,
-     "dur": 0.7
+     "t": 13.344,
+     "type": "push",
+     "amount": 0.05,
+     "dur": 0.8
     }
    ],
    "start": 11.216,
    "end": 14.798
   },
   {
-   "id": "s05_question",
+   "id": "s05_owner",
    "transition": {
     "type": "push"
    },
-   "page": "ink",
-   "fg": 0,
-   "lockup": {
-    "descriptor": "",
-    "title": "값을 올리면\n되지 않냐고요?",
-    "hero": true,
-    "enter": 14.898,
-    "size": 118,
-    "at": [
-     0,
-     -120
-    ],
-    "max_width": 960
+   "video": {
+    "src": "clips/jjajang_1970/05.mp4"
    },
-   "beats": [
-    {
-     "t": 15.298,
-     "type": "push",
-     "amount": 0.06,
-     "target": "lockup",
-     "dur": 0.6
-    }
-   ],
    "start": 14.798,
    "end": 16.616
   },
@@ -299,120 +248,93 @@
    "transition": {
     "type": "cut"
    },
-   "hero": {
-    "asset": "jj_notice_hygiene",
-    "height": 700,
-    "x": -120,
-    "top": -190,
-    "enter": 17.729
+   "video": {
+    "src": "clips/jjajang_1970/06.mp4"
    },
    "support": [
     {
-     "asset": "jj_notice_tax",
-     "height": 560,
+     "asset": "jj_notice_hygiene",
+     "name": "n1",
+     "height": 360,
      "at": [
-      230,
-      120
+      -300,
+      250
      ],
-     "depth": 0.99,
-     "enter": 18.722,
+     "rot": -5,
+     "depth": 1.0,
+     "enter": 17.729,
      "enter_kind": "drop"
-    }
-   ],
-   "lockup": {
-    "descriptor": "올리는 순간",
-    "title": "위생 검사\n세무 조사",
-    "enter": 16.716,
-    "size": 108,
-    "at": [
-     0,
-     -380
-    ],
-    "max_width": 940
-   },
-   "beats": [
+    },
     {
-     "t": 18.788,
-     "type": "push",
-     "amount": 0.08,
-     "dur": 0.6
+     "asset": "jj_notice_tax",
+     "name": "n2",
+     "height": 360,
+     "at": [
+      300,
+      280
+     ],
+     "rot": 6,
+     "depth": 0.99,
+     "enter": 18.788,
+     "enter_kind": "drop"
     }
    ],
    "start": 16.616,
    "end": 20.162
   },
   {
-   "id": "s07_flip",
+   "id": "s07_brush",
    "transition": {
     "type": "slide",
     "dir": "up"
    },
-   "lockup": {
-    "descriptor": "발상을 뒤집다",
-    "title": "값 대신\n이름을 바꾸자",
-    "hero": true,
-    "enter": 21.912,
-    "size": 120,
-    "at": [
-     0,
-     -140
-    ],
-    "max_width": 960
+   "video": {
+    "src": "clips/jjajang_1970/07.mp4"
    },
    "beats": [
     {
-     "t": 22.06,
+     "t": 21.912,
      "type": "push",
-     "amount": 0.08,
-     "target": "lockup",
-     "dur": 0.6
+     "amount": 0.06,
+     "dur": 0.7
     }
    ],
    "start": 20.162,
    "end": 23.362
   },
   {
-   "id": "s08_newmenu",
+   "id": "s08_bowls",
    "transition": {
     "type": "push"
    },
-   "hero": {
-    "asset": "jj_menu_new",
-    "height": 780,
-    "x": 0,
-    "top": -250,
-    "enter": 23.662
+   "video": {
+    "src": "clips/jjajang_1970/08.mp4"
    },
-   "lockup": {
-    "descriptor": "짜장면이 아니니까",
-    "title": "값은 자유",
-    "enter": 26.155,
-    "size": 116,
-    "at": [
-     0,
-     -350
-    ],
-    "max_width": 940
-   },
+   "support": [
+    {
+     "asset": "jj_menu_new",
+     "name": "menu",
+     "height": 380,
+     "at": [
+      250,
+      -300
+     ],
+     "rot": -3,
+     "depth": 1.0,
+     "enter": 26.155,
+     "enter_kind": "drop"
+    }
+   ],
    "diagrams": [
     {
      "type": "ring",
-     "on": "hero",
+     "on": "menu",
      "src": "part",
      "r": [
-      230,
-      120
+      120,
+      75
      ],
-     "t": 24.335,
-     "dur": 0.8
-    }
-   ],
-   "beats": [
-    {
-     "t": 24.213,
-     "type": "push",
-     "amount": 0.09,
-     "target": "part",
+     "t": 26.703,
      "dur": 0.7
     }
    ],
@@ -426,29 +348,30 @@
     "dir": "left"
    },
    "fade_out": 0.6,
-   "hero": {
-    "asset": "jj_menu_today",
-    "height": 780,
-    "x": 0,
-    "top": -250,
-    "enter": 28.398
+   "video": {
+    "src": "clips/jjajang_1970/09.mp4",
+    "look": "modern"
    },
-   "lockup": {
-    "descriptor": "지금 메뉴판에 숨은",
-    "title": "짜장의 사연",
-    "enter": 29.877,
-    "size": 112,
-    "at": [
-     0,
-     -420
-    ],
-    "max_width": 940
-   },
+   "support": [
+    {
+     "asset": "jj_menu_today",
+     "name": "menu",
+     "height": 330,
+     "at": [
+      300,
+      290
+     ],
+     "rot": 5,
+     "depth": 1.0,
+     "enter": 29.711,
+     "enter_kind": "drop"
+    }
+   ],
    "beats": [
     {
      "t": 28.882,
      "type": "pull",
-     "amount": 0.07,
+     "amount": 0.05,
      "dur": 1.2
     }
    ],

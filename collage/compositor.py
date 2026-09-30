@@ -186,6 +186,8 @@ class Compositor:
             st = layer.state(t, self.step_fps)
             if st is None:
                 continue
+            if hasattr(layer, "update"):
+                layer.update(t)
             M = layer_matrix(layer, st, cam, W, H, self.vs)
             st_prev = layer.state(t - dt, self.step_fps) or st
             Mp = layer_matrix(layer, st_prev, cam_prev, W, H, self.vs)
