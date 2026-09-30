@@ -29,6 +29,7 @@ sys.path.insert(0, HERE)
 SYL_PER_SEC = 7.0      # Typecast default speed, Korean
 PAUSE = 0.35           # between lines
 COMMA = 0.14           # per comma / full stop inside a line
+GAP_WEIGHT = 4.0       # seconds of position error one second of extra pause is worth
 
 
 def ffmpeg_bin():
@@ -82,7 +83,8 @@ def speech_segments(path, noise_db=-35, min_sil=0.22):
 
 def align(lines, segs):
     """Choose len(lines)-1 of the pauses between speech segments as line boundaries (DP on the
-    distance to the syllable-proportional expectation)."""
+    distance to the syllable-proportional expectation, favouring longer pauses: TTS voices breathe
+    longer between paragraphs than at a comma)."""
     n, m = len(lines), len(segs)
     if m < n:
         return None
@@ -94,19 +96,20 @@ def align(lines, segs):
         acc += w[k]
         exp.append(t0 + (t1 - t0) * acc / tot)
     gaps = [(segs[j][1] + segs[j + 1][0]) / 2 for j in range(m - 1)]
+    glen = [segs[j + 1][0] - segs[j][1] for j in range(m - 1)]
     INF = float("inf")
     # dp[k][j]: boundary k placed at gap j
     dp = [[INF] * (m - 1) for _ in range(n - 1)]
     bk = [[-1] * (m - 1) for _ in range(n - 1)]
     for j in range(m - 1):
-        dp[0][j] = abs(gaps[j] - exp[0])
+        dp[0][j] = abs(gaps[j] - exp[0]) - GAP_WEIGHT * glen[j]
     for k in range(1, n - 1):
         best, arg = INF, -1
         for j in range(m - 1):
             if j - 1 >= 0 and dp[k - 1][j - 1] < best:
                 best, arg = dp[k - 1][j - 1], j - 1
             if best < INF:
-                dp[k][j] = best + abs(gaps[j] - exp[k])
+                dp[k][j] = best + abs(gaps[j] - exp[k]) - GAP_WEIGHT * glen[j]
                 bk[k][j] = arg
     j = min(range(m - 1), key=lambda q: dp[n - 2][q]) if n > 1 else None
     cuts = []
@@ -119,6 +122,82 @@ def align(lines, segs):
         out.append((segs[first][0], segs[c][1]))
         first = c + 1
     return out
+
+
+def tighten(audio, segs, spans, out, tempo=1.0, line_gap=0.28, inner_gap=0.12, lead=0.15, tail=0.4):
+    """Rebuild the narration with capped pauses (line breaks keep a slightly longer breath than the
+    pauses inside a line), then speed it up without changing pitch. Returns (path, new spans, dur)."""
+    import numpy as np
+    sr = 44100
+    raw = subprocess.run([ffmpeg_bin(), "-v", "error", "-i", audio, "-f", "f32le", "-ac", "1", "-ar", str(sr), "-"],
+                         capture_output=True, check=True).stdout
+    x = np.frombuffer(raw, np.float32)
+    line_ends = {b for _, b in spans}
+    pieces, new_spans, t = [np.zeros(int(lead * sr), np.float32)], [], lead
+    fade = int(0.012 * sr)
+    cur_start = None
+    for i, (a, b) in enumerate(segs):
+        a0, b0 = max(0.0, a - 0.03), b + 0.05
+        seg = x[int(a0 * sr):int(b0 * sr)].copy()
+        if len(seg) > 2 * fade:
+            seg[:fade] *= np.linspace(0, 1, fade)
+            seg[-fade:] *= np.linspace(1, 0, fade)
+        if cur_start is None:
+            cur_start = t
+        pieces.append(seg)
+        t += len(seg) / sr
+        if b in line_ends:
+            new_spans.append((cur_start, t))
+            cur_start = None
+            gap = line_gap
+        else:
+            gap = inner_gap
+        if i + 1 < len(segs):
+            pieces.append(np.zeros(int(gap * sr), np.float32))
+            t += gap
+    pieces.append(np.zeros(int(tail * sr), np.float32))
+    y = np.concatenate(pieces)
+    tmp = out + ".raw.f32"
+    y.astype(np.float32).tofile(tmp)
+    subprocess.run([ffmpeg_bin(), "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "1", "-i", tmp,
+                    "-af", f"atempo={tempo:.3f},loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", str(sr), "-ac", "2",
+                    "-c:a", "pcm_s16le", out], check=True)
+    os.remove(tmp)
+    k = 1.0 / tempo
+    return out, [(a * k, b * k) for a, b in new_spans], len(y) / sr * k
+
+
+def align_text(lines, phrases):
+    """Group transcript phrases (in order) into the script lines by text similarity (DP).
+    Uses the on-screen caption wording, which writes numbers the way Whisper does (100원, 10%)."""
+    from difflib import SequenceMatcher
+
+    def norm(t):
+        return "".join(re.findall(r"[가-힣0-9A-Za-z]", t))
+    targets = [norm(ln.get("caption", ln["tts"]).replace("**", "")) for ln in lines]
+    texts = [norm(p["text"]) for p in phrases]
+    n, m = len(lines), len(phrases)
+    if m < n:
+        return None
+    INF = float("inf")
+    dp = [[INF] * (m + 1) for _ in range(n + 1)]
+    bk = [[0] * (m + 1) for _ in range(n + 1)]
+    dp[0][0] = 0.0
+    for k in range(1, n + 1):
+        for j in range(k, m - (n - k) + 1):
+            for i in range(k - 1, j):
+                if dp[k - 1][i] == INF:
+                    continue
+                c = 1.0 - SequenceMatcher(None, "".join(texts[i:j]), targets[k - 1]).ratio()
+                if dp[k - 1][i] + c < dp[k][j]:
+                    dp[k][j], bk[k][j] = dp[k - 1][i] + c, i
+    groups, j = [], m
+    for k in range(n, 0, -1):
+        i = bk[k][j]
+        groups.append((i, j))
+        j = i
+    groups.reverse()
+    return [(phrases[i]["start"], phrases[j - 1]["end"]) for i, j in groups]
 
 
 def resolve(v, t0, spans):
@@ -186,6 +265,11 @@ def main():
     ap.add_argument("--audio")
     ap.add_argument("--tts", action="store_true", help="write the narration script for the TTS tool and exit")
     ap.add_argument("--noise", type=float, default=-35, help="silence threshold in dB")
+    ap.add_argument("--transcript", help="tools/transcribe.py output for --audio: align lines by their words")
+    ap.add_argument("--tempo", type=float, default=None,
+                    help="speed the narration up (e.g. 1.15) and cap the pauses - pitch is kept")
+    ap.add_argument("--line-gap", type=float, default=0.28, help="pause kept between lines with --tempo (s, before speed-up)")
+    ap.add_argument("--inner-gap", type=float, default=0.12, help="pause kept inside a line with --tempo")
     ap.add_argument("--render", action="store_true", help="run render.py afterwards")
     a, rest = ap.parse_known_args()
     ep = json.load(open(a.episode, encoding="utf-8"))
@@ -200,7 +284,12 @@ def main():
         return
     if a.audio:
         segs, dur = speech_segments(a.audio, a.noise)
-        spans = align(lines, segs)
+        if a.transcript:
+            phrases = json.load(open(a.transcript, encoding="utf-8"))["segments"]
+            segs = [(p["start"], p["end"]) for p in phrases]
+            spans = align_text(lines, phrases)
+        else:
+            spans = align(lines, segs)
         if spans is None:
             print(f"[timing] only {len(segs)} pauses-separated phrases for {len(lines)} lines - "
                   f"using proportional timing inside the narration")
@@ -209,6 +298,13 @@ def main():
             sc = (k1 - k0) / (edur - 0.5)
             spans = [(k0 + x * sc, k0 + y * sc) for x, y in est]
         duration = dur + 0.3
+        if a.tempo:
+            if not any(abs(b - y) < 1e-6 for _, b in segs for _, y in spans[-1:]):
+                raise SystemExit("--tempo needs the lines to be found at pauses; check --noise")
+            paced = os.path.join(HERE, "audio", f"{ep['id']}_paced.wav")
+            a.audio, spans, dur = tighten(a.audio, segs, spans, paced, a.tempo, a.line_gap, a.inner_gap)
+            duration = dur
+            print(f"[pace] {paced}  x{a.tempo} -> {dur:.1f}s")
     else:
         spans, duration = estimate(lines)
     for i, (x, y) in enumerate(spans):

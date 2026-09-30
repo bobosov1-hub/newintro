@@ -150,3 +150,18 @@ python tools/make_short.py shorts/jjajang_1970.json --audio audio/jjajang_1970.m
 - 장면 시각은 `"L3"`(3번째 줄 시작), `"L3@0.5"`(3번째 줄 절반), `"L3+0.2"`처럼 **대본 줄 기준**으로 적어서, 음성 길이가 바뀌어도 연출이 따라갑니다.
 - 소품: `collage/procedural/jjajang.py`(그릇·차림표·물가 그래프·통지서). 실사 사진을 `sources/jj_bowl.jpg`처럼 같은 이름으로 넣고 `prep_subject.py --batch sources/`를 돌리면 사진으로 바뀝니다.
 - 자막·상단 시리즈 표시: `collage/captions.py` — 유튜브 쇼츠 하단 제목 영역과 오른쪽 버튼을 피하도록 화면 70% 높이에 배치.
+
+### 목소리 넣기 (속도감 + 정확한 싱크)
+
+```bash
+# 받아쓰기 (로컬 Whisper) - 중복·실수 구간 확인용이자 싱크 기준
+python tools/transcribe.py audio/jjajang_1970_voicebox_edit.wav --out data/transcript_jjajang_edit.json
+
+# 대본 줄을 받아쓴 글자로 맞추고(--transcript), 쉼을 줄이고 1.1배속(음 높이 유지) → 렌더
+python tools/make_short.py shorts/jjajang_1970.json --audio audio/jjajang_1970_voicebox_edit.wav \
+    --transcript data/transcript_jjajang_edit.json --tempo 1.1 --line-gap 0.26 --inner-gap 0.10 --render --seed 1970
+```
+
+- `--tempo`: 말 속도(음 높이 그대로). `--line-gap`/`--inner-gap`: 줄 사이/줄 안 쉼 상한(초). 결과 음성은 `audio/<id>_paced.wav`.
+- `--transcript` 없이도 쉼 길이로 줄을 맞추지만, TTS가 쉼표에서 길게 쉬면 경계가 어긋날 수 있어 받아쓰기 기준이 더 정확합니다.
+- #1 편집 기록: 원본 보이스박스 음성 35.0~43.1초(마지막 문장을 읽다가 앞 두 문장을 다시 읽은 중복)를 잘라냄 → `audio/jjajang_1970_voicebox_edit.wav`.
