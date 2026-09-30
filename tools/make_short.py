@@ -200,6 +200,21 @@ def align_text(lines, phrases):
     return [(phrases[i]["start"], phrases[j - 1]["end"]) for i, j in groups]
 
 
+def mix_bgm(voice, bgm, out, duration, gain_db=-17.0, fade_out=1.6):
+    """Lay a music bed under the narration: looped/trimmed to length, faded, ducked under the voice
+    (sidechain), then loudness-normalised for Shorts (-14 LUFS)."""
+    fo_st = max(0.0, duration - fade_out)
+    fc = (f"[1:a]aloop=loop=-1:size=2e9,atrim=0:{duration:.3f},asetpts=PTS-STARTPTS,"
+          f"afade=t=in:st=0:d=0.4,afade=t=out:st={fo_st:.3f}:d={fade_out:.3f},volume={gain_db}dB,"
+          f"aformat=sample_rates=44100:channel_layouts=stereo[m];"
+          f"[0:a]aformat=sample_rates=44100:channel_layouts=stereo,asplit=2[v][sc];"
+          f"[m][sc]sidechaincompress=threshold=0.02:ratio=4:attack=20:release=350[md];"
+          f"[v][md]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[o]")
+    subprocess.run([ffmpeg_bin(), "-v", "error", "-y", "-i", voice, "-i", bgm, "-filter_complex", fc, "-map", "[o]",
+                    "-ar", "44100", "-c:a", "pcm_s16le", out], check=True)
+    return out
+
+
 def resolve(v, t0, spans):
     if isinstance(v, (int, float)):
         return t0 + float(v)
@@ -270,6 +285,8 @@ def main():
                     help="speed the narration up (e.g. 1.15) and cap the pauses - pitch is kept")
     ap.add_argument("--line-gap", type=float, default=0.28, help="pause kept between lines with --tempo (s, before speed-up)")
     ap.add_argument("--inner-gap", type=float, default=0.12, help="pause kept inside a line with --tempo")
+    ap.add_argument("--bgm", help="background music file (looped/trimmed, ducked under the voice)")
+    ap.add_argument("--bgm-db", type=float, default=-17.0, help="music level before ducking (dB)")
     ap.add_argument("--render", action="store_true", help="run render.py afterwards")
     a, rest = ap.parse_known_args()
     ep = json.load(open(a.episode, encoding="utf-8"))
@@ -309,6 +326,10 @@ def main():
         spans, duration = estimate(lines)
     for i, (x, y) in enumerate(spans):
         print(f"  L{i + 1:<2} {x:6.2f}-{y:6.2f}  {lines[i]['tts']}")
+    if a.bgm and a.audio:
+        mixed = os.path.join(HERE, "audio", f"{ep['id']}_mix.wav")
+        a.audio = mix_bgm(a.audio, a.bgm, mixed, duration, a.bgm_db)
+        print(f"[bgm] {mixed}  music {a.bgm_db:+.0f}dB, ducked under the voice")
     sb = build(ep, spans, duration, a.audio)
     out = os.path.join(HERE, "storyboards", f"{ep['id']}.json")
     with open(out, "w", encoding="utf-8") as fh:
