@@ -19,7 +19,7 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-from collage.procedural import docs, figures, maps, objects  # noqa: E402
+from collage.procedural import docs, figures, jjajang, maps, objects  # noqa: E402
 
 GENERATORS = {
     # name: (callable, options for prep_subject)
@@ -35,6 +35,14 @@ GENERATORS = {
     "sticker_sub": (lambda: docs.sticker("구독"), {}),
     "sticker_like": (lambda: docs.sticker("좋아요", seed=23, w=620, filled=False), {}),
     "tape": (lambda: docs.tape(), {}),
+    # 그때 그 돈 #1 (짜장면)
+    "jj_bowl": (lambda: jjajang.bowl(), {}),
+    "jj_menu_1970": (lambda: jjajang.menu_1970(), {}),
+    "jj_menu_new": (lambda: jjajang.menu_new(), {}),
+    "jj_menu_today": (lambda: jjajang.menu_today(), {}),
+    "jj_inflation": (lambda: jjajang.inflation_chart(), {}),
+    "jj_notice_hygiene": (lambda: jjajang.notice(), {}),
+    "jj_notice_tax": (lambda: jjajang.notice(seed=47, title="세 무 조 사", stamp="세무조사", reason="세무 조사"), {}),
     # fallbacks, used only when no photograph with this name exists
     "man_back": (lambda: figures.man_back("suit"), {"person": True}),
     "woman_back": (lambda: figures.woman_back(), {"person": True}),

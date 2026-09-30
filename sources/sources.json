@@ -76,5 +76,33 @@
  "mountains": {
   "method": "alpha",
   "generated": true
+ },
+ "jj_bowl": {
+  "method": "alpha",
+  "generated": true
+ },
+ "jj_menu_1970": {
+  "method": "alpha",
+  "generated": true
+ },
+ "jj_menu_new": {
+  "method": "alpha",
+  "generated": true
+ },
+ "jj_menu_today": {
+  "method": "alpha",
+  "generated": true
+ },
+ "jj_inflation": {
+  "method": "alpha",
+  "generated": true
+ },
+ "jj_notice_hygiene": {
+  "method": "alpha",
+  "generated": true
+ },
+ "jj_notice_tax": {
+  "method": "alpha",
+  "generated": true
  }
 }

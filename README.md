@@ -122,3 +122,31 @@ sources/  assets/  fonts/  audio/
 - 지도: 통계청 2013 행정경계 (southkorea/southkorea-maps) 를 단순화
 - 배경 제거 모델: rembg 공개 ONNX(ISNet general-use, U²-Net) — 최초 실행 시 `~/.cache/collage-models`에 내려받음
 - 전사 모델: sherpa-onnx Whisper large-v3-turbo, Silero VAD
+
+---
+
+## 7. 세로 쇼츠 — 「그때 그 돈」 시리즈
+
+같은 콜라주 엔진으로 9:16(1080×1920) 시니어 대상 쇼츠를 만듭니다. 한 편은 `shorts/<id>.json` 하나에 대본(줄 단위)과 장면 구성을 적습니다.
+
+- 대본 구조(신비한 건축사전식): **현장·모순 훅 → "그런데 이상하죠?" → 문제 → "그럼 ~하면 되지 않냐고요?" → 막힘 → "발상을 뒤집습니다" → 해결 → 지금으로 연결하는 마무리(첫 장면으로 되돌아가는 루프)**, 25~40초.
+- `tts`는 TTS가 읽기 쉬운 표기(숫자는 한글로, 쉼표로 호흡), `caption`은 화면 자막(숫자는 아라비아 숫자, `**강조**`는 레드오렌지, ` / `로 자막을 나눔).
+- 화면에 찍히는 가격·수치는 `sources`에 적은 출처가 있는 값만 씁니다.
+
+### 작업 순서
+
+```bash
+# 1) 타입캐스트에 붙여 넣을 대본 (줄마다 빈 줄로 구분 → 문장 사이에 쉼이 생김)
+python tools/make_short.py shorts/jjajang_1970.json --tts        # -> output/jjajang_1970_tts.txt
+
+# 2) 목소리 없이 미리보기 (음절 수로 타이밍 추정)
+python tools/make_short.py shorts/jjajang_1970.json --render --seed 1970
+
+# 3) 타입캐스트 mp3를 audio/에 넣고 → 쉼을 감지해 줄 경계를 자동으로 맞춘 뒤 렌더
+python tools/make_short.py shorts/jjajang_1970.json --audio audio/jjajang_1970.mp3 --render --seed 1970
+```
+
+- 결과: `output/jjajang_1970_seed1970_chaos0.40.mp4` (1080×1920, 30fps, 음성 포함).
+- 장면 시각은 `"L3"`(3번째 줄 시작), `"L3@0.5"`(3번째 줄 절반), `"L3+0.2"`처럼 **대본 줄 기준**으로 적어서, 음성 길이가 바뀌어도 연출이 따라갑니다.
+- 소품: `collage/procedural/jjajang.py`(그릇·차림표·물가 그래프·통지서). 실사 사진을 `sources/jj_bowl.jpg`처럼 같은 이름으로 넣고 `prep_subject.py --batch sources/`를 돌리면 사진으로 바뀝니다.
+- 자막·상단 시리즈 표시: `collage/captions.py` — 유튜브 쇼츠 하단 제목 영역과 오른쪽 버튼을 피하도록 화면 70% 높이에 배치.

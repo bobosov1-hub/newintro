@@ -25,6 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 from collage import palette as P  # noqa: E402
+from collage.captions import Overlay  # noqa: E402
 from collage.compositor import Compositor  # noqa: E402
 from collage.easing import in_out_sine, out_expo, out_expo_settle, stepped  # noqa: E402
 from collage.finish import Finish  # noqa: E402
@@ -167,7 +168,8 @@ def render_frame(fi):
         r1 = r1 * (1 - 0.45 * sh * (1 - mask))[..., None]
         rgb = r1 * (1 - mask[..., None]) + r2s * mask[..., None]
         acc = c1 * (1 - mask) + c2s * mask
-    last = tl.scenes[-1]
+    if G.get("overlay") is not None:
+        rgb = G["overlay"].apply(rgb, t)
     fo = float(G.get("fade_out", 0.0))
     if fo > 0 and t > tl.duration - fo:
         k = in_out_sine((t - (tl.duration - fo)) / fo)
@@ -238,7 +240,9 @@ def main():
     print(f"[render] built {len(scenes)} scenes in {time.time() - t:.1f}s", flush=True)
     comp = Compositor(W, H, fps=fps, step_fps=float(sb.get("step_fps", 12)), vs=a.scale)
     fin = Finish(W, H, build)
-    G.update(tl=tl, comp=comp, fin=fin, fps=fps, crf=a.crf, preset=a.preset, grain_step=a.grain_step, tune=a.tune,
+    overlay = Overlay(W, H, sb, build, scale=a.scale, step_fps=float(sb.get("step_fps", 12))) \
+        if (sb.get("captions") or sb.get("header")) else None
+    G.update(overlay=overlay, tl=tl, comp=comp, fin=fin, fps=fps, crf=a.crf, preset=a.preset, grain_step=a.grain_step, tune=a.tune,
              fade_out=float(sb["scenes"][-1].get("fade_out", 0.0)))
 
     out_dir = os.path.join(HERE, "output")

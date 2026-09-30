@@ -1,0 +1,398 @@
+{
+ "id": "jjajang_1970",
+ "title": "그때 그 돈 #1 - 짜장면 값을 못 올리던 시절",
+ "size": [
+  1080,
+  1920
+ ],
+ "fps": 30,
+ "step_fps": 12,
+ "header": {
+  "series": "그때 그 돈",
+  "episode": "1970년대 · 짜장면"
+ },
+ "captions_style": {
+  "y": 0.7,
+  "size": 76,
+  "weight": 800
+ },
+ "sources": [
+  "경향신문 2022-05-26 [돌아온 인플레이션 ③] 짜장면값 올리면 '위생' 보복 - 1970년대 초 가격협정요금으로 짜장면 100원 아래 유지, 인상 시 위생검사·세무조사, 삼선짜장·유니짜장 등 통제 밖 메뉴 개발",
+  "같은 기사 - 소비자물가 상승률 1970년 16%, 1971년 13.5%, 1972년 11.7%, 1973년 3.2%"
+ ],
+ "lines": [
+  {
+   "tts": "천구백칠십 년대 초. 값을 올리면 안 되는 음식이 있었습니다.",
+   "caption": "1970년대 초 / 값을 올리면 안 되는 음식"
+  },
+  {
+   "tts": "바로 짜장면이죠.",
+   "caption": "바로 **짜장면**이죠"
+  },
+  {
+   "tts": "정부가 짜장면 값을, 백 원 아래로 꽁꽁 묶어 뒀거든요.",
+   "caption": "정부가 짜장면 값을 / **100원** 아래로 꽁꽁 묶어 뒀거든요"
+  },
+  {
+   "tts": "그런데 이상하죠? 그때 물가는, 해마다 십 퍼센트 넘게 뛰었거든요.",
+   "caption": "그런데 이상하죠? / 그때 물가는 해마다 **10% 넘게** 뛰었거든요"
+  },
+  {
+   "tts": "재료값은 오르는데, 짜장면 값은 그대로. 팔수록 손해였죠.",
+   "caption": "재료값은 오르는데 짜장면 값은 그대로 / 팔수록 **손해**였죠"
+  },
+  {
+   "tts": "그럼 값을 올리면 되지 않냐고요?",
+   "caption": "그럼 값을 올리면 되지 않냐고요?"
+  },
+  {
+   "tts": "올리는 순간, 위생 검사에, 세무 조사까지 들이닥쳤습니다.",
+   "caption": "올리는 순간 / **위생 검사**에 **세무 조사**까지"
+  },
+  {
+   "tts": "그래서 사장님들은 발상을 뒤집습니다. 값 대신, 이름을 바꾸자.",
+   "caption": "그래서 사장님들은 발상을 뒤집습니다 / 값 대신 **이름**을 바꾸자"
+  },
+  {
+   "tts": "해물을 넣은 삼선짜장. 고기를 곱게 간 유니짜장.",
+   "caption": "해물을 넣은 **삼선짜장** / 고기를 곱게 간 **유니짜장**"
+  },
+  {
+   "tts": "짜장면이 아니니까, 값은 자유였죠.",
+   "caption": "짜장면이 아니니까 / 값은 **자유**였죠"
+  },
+  {
+   "tts": "지금 메뉴판에 짜장이 이렇게 많은 데에는, 이런 사연이 있었던 겁니다.",
+   "caption": "지금 메뉴판에 짜장이 이렇게 많은 데에는 / **이런 사연**이 있었던 겁니다"
+  }
+ ],
+ "scenes": [
+  {
+   "id": "s01_hook",
+   "from_line": 1,
+   "transition": {
+    "type": "cut"
+   },
+   "rack": true,
+   "hero": {
+    "asset": "jj_bowl",
+    "height": 560,
+    "x": 0,
+    "top": -260,
+    "enter": 0.55
+   },
+   "lockup": {
+    "descriptor": "1970년대 초",
+    "title": "값을 못 올리는\n음식",
+    "enter": 0.2,
+    "size": 112,
+    "max_width": 940
+   },
+   "beats": [
+    {
+     "t": "L1@0.55",
+     "type": "push",
+     "amount": 0.07,
+     "dur": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s02_menu",
+   "from_line": 2,
+   "transition": {
+    "type": "push"
+   },
+   "hero": {
+    "asset": "jj_menu_1970",
+    "height": 780,
+    "x": 0,
+    "top": -250,
+    "enter": 0.35
+   },
+   "lockup": {
+    "descriptor": "정부가 묶어 둔 값",
+    "title": "짜장면 100원",
+    "enter": "L3",
+    "size": 104,
+    "at": [
+     0,
+     -420
+    ],
+    "max_width": 940
+   },
+   "diagrams": [
+    {
+     "type": "ring",
+     "on": "hero",
+     "src": "part",
+     "r": [
+      280,
+      80
+     ],
+     "t": "L3@0.45",
+     "dur": 0.7
+    }
+   ],
+   "beats": [
+    {
+     "t": "L3@0.4",
+     "type": "push",
+     "amount": 0.1,
+     "target": "part",
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s03_inflation",
+   "from_line": 4,
+   "transition": {
+    "type": "slide",
+    "dir": "left"
+   },
+   "hero": {
+    "asset": "jj_inflation",
+    "height": 620,
+    "x": 0,
+    "top": -230,
+    "enter": "L4@0.35"
+   },
+   "lockup": {
+    "descriptor": "그런데 이상하죠?",
+    "title": "물가는 해마다\n10% 넘게",
+    "enter": 0.15,
+    "size": 104,
+    "max_width": 940
+   },
+   "beats": [
+    {
+     "t": "L4@0.6",
+     "type": "push",
+     "amount": 0.08,
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s04_loss",
+   "from_line": 5,
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "jj_bowl",
+    "height": 600,
+    "x": 0,
+    "top": -200,
+    "enter": 0.4,
+    "exit": {
+     "t": "L5@0.8",
+     "all": true
+    }
+   },
+   "lockup": {
+    "descriptor": "재료값은 오르는데",
+    "title": "팔수록 손해",
+    "enter": 0.15,
+    "size": 116,
+    "max_width": 940
+   },
+   "beats": [
+    {
+     "t": "L5@0.55",
+     "type": "pull",
+     "amount": 0.06,
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s05_question",
+   "from_line": 6,
+   "transition": {
+    "type": "push"
+   },
+   "page": "ink",
+   "fg": 0,
+   "lockup": {
+    "descriptor": "",
+    "title": "값을 올리면\n되지 않냐고요?",
+    "hero": true,
+    "enter": 0.1,
+    "size": 118,
+    "at": [
+     0,
+     -120
+    ],
+    "max_width": 960
+   },
+   "beats": [
+    {
+     "t": 0.5,
+     "type": "push",
+     "amount": 0.06,
+     "target": "lockup",
+     "dur": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s06_raid",
+   "from_line": 7,
+   "transition": {
+    "type": "cut"
+   },
+   "hero": {
+    "asset": "jj_notice_hygiene",
+    "height": 700,
+    "x": -120,
+    "top": -190,
+    "enter": "L7@0.3"
+   },
+   "support": [
+    {
+     "asset": "jj_notice_tax",
+     "height": 560,
+     "at": [
+      230,
+      120
+     ],
+     "depth": 0.99,
+     "enter": "L7@0.6",
+     "enter_kind": "drop"
+    }
+   ],
+   "lockup": {
+    "descriptor": "올리는 순간",
+    "title": "위생 검사\n세무 조사",
+    "enter": 0.1,
+    "size": 108,
+    "at": [
+     0,
+     -380
+    ],
+    "max_width": 940
+   },
+   "beats": [
+    {
+     "t": "L7@0.62",
+     "type": "push",
+     "amount": 0.08,
+     "dur": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s07_flip",
+   "from_line": 8,
+   "transition": {
+    "type": "slide",
+    "dir": "up"
+   },
+   "lockup": {
+    "descriptor": "발상을 뒤집다",
+    "title": "값 대신\n이름을 바꾸자",
+    "hero": true,
+    "enter": "L8@0.55",
+    "size": 120,
+    "at": [
+     0,
+     -140
+    ],
+    "max_width": 960
+   },
+   "beats": [
+    {
+     "t": "L8@0.6",
+     "type": "push",
+     "amount": 0.08,
+     "target": "lockup",
+     "dur": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s08_newmenu",
+   "from_line": 9,
+   "transition": {
+    "type": "push"
+   },
+   "hero": {
+    "asset": "jj_menu_new",
+    "height": 780,
+    "x": 0,
+    "top": -250,
+    "enter": 0.3
+   },
+   "lockup": {
+    "descriptor": "짜장면이 아니니까",
+    "title": "값은 자유",
+    "enter": "L10",
+    "size": 116,
+    "at": [
+     0,
+     -350
+    ],
+    "max_width": 940
+   },
+   "diagrams": [
+    {
+     "type": "ring",
+     "on": "hero",
+     "src": "part",
+     "r": [
+      230,
+      120
+     ],
+     "t": "L9@0.35",
+     "dur": 0.8
+    }
+   ],
+   "beats": [
+    {
+     "t": "L9@0.3",
+     "type": "push",
+     "amount": 0.09,
+     "target": "part",
+     "dur": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s09_today",
+   "from_line": 11,
+   "transition": {
+    "type": "slide",
+    "dir": "left"
+   },
+   "fade_out": 0.6,
+   "hero": {
+    "asset": "jj_menu_today",
+    "height": 780,
+    "x": 0,
+    "top": -250,
+    "enter": 0.3
+   },
+   "lockup": {
+    "descriptor": "지금 메뉴판에 숨은",
+    "title": "짜장의 사연",
+    "enter": "L11@0.5",
+    "size": 112,
+    "at": [
+     0,
+     -420
+    ],
+    "max_width": 940
+   },
+   "beats": [
+    {
+     "t": "L11@0.2",
+     "type": "pull",
+     "amount": 0.07,
+     "dur": 1.2
+    }
+   ]
+  }
+ ]
+}
