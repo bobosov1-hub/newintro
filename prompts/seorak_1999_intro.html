@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>설악산 1999 인트로 프롬프트</title>
+<style>
+:root{--bg:#0d0d0d;--card:#151515;--line:#262626;--text:#9a9a9a;--hi:#d0d0d0;--acc:#c0392b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Courier New",monospace;font-size:14px;line-height:1.55;padding:24px 16px}
+.wrap{max-width:980px;margin:0 auto}h1{color:var(--hi);font-size:20px;margin:0 0 6px}p.note{margin:0 0 20px;font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px;margin-bottom:14px}
+.hd{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:10px}.num{color:var(--acc);font-weight:bold}.file{color:var(--hi)}
+.line{color:var(--hi);margin-bottom:10px}.tag{font-size:12px;border:1px solid var(--line);padding:1px 6px;border-radius:3px}
+.lbl{display:flex;justify-content:space-between;align-items:center;margin:10px 0 4px;color:var(--hi);font-size:12px}
+pre{white-space:pre-wrap;word-break:break-word;background:#0a0a0a;border:1px solid var(--line);border-radius:4px;padding:10px;margin:0;font-family:inherit;font-size:12.5px}
+button{background:#222;color:var(--hi);border:1px solid #333;border-radius:4px;padding:4px 10px;font-family:inherit;font-size:12px;cursor:pointer}button:active{background:#333}
+</style></head><body><div class="wrap">
+<h1>1999 설악산 의문사 · 인트로 장면 프롬프트</h1>
+<p class="note">Flow 이미지는 <b>파일명 그대로</b> 저장 (intro_01.png …). 🎬 표시 장면만 Grok 영상(intro_XX.mp4, 6초)으로 추가 생성. 제목·자막 텍스트는 제가 렌더링 단계에서 넣으니 이미지에는 글자를 넣지 마세요.</p>
+<div id="list"></div></div>
+<script>
+const STYLE=" Cold blue desaturated tones, muted rust-red autumn foliage drained of warmth. Heavy 35mm film grain, scanned film dust. Low-key lighting with dramatic high-contrast shadows. Halation bleeding from bright highlights. Surveillance perspective, candid slightly off-focus angle, 35mm lens natural perspective. Gritty cinematic realism. South Korea, October 1999. No text, no logos. --ar 16:9";
+const CTX="[CONTEXT] Cold blue desaturated 35mm film tone, muted autumn foliage, heavy grain, low-key high-contrast lighting, surveillance framing.";
+const TAIL="Tone: Investigative documentary style. Cold blue grain maintained every frame.\nConstraint: No excessive or fast action. No morphing, no sudden changes. 1080p film grain texture maintained.";
+const S=[
+["01","여러분들은 화려한 단풍이 물든 설악산에서 얼마나 많은 사고가…","풍경",
+"Vast wide shot of Seoraksan mountain ridges in peak autumn, jagged granite peaks rising out of drifting morning fog, slopes covered in dense autumn foliage. Tiny distant line of hikers on a ridge trail, seen from far behind.",
+"Subject movement: Distant hikers barely moving along the ridge.\nMotion: Fog slowly drifting through the valleys, very slow push-in over 6 seconds."],
+["02","최근 오년간 전국 국립공원 사망자 수 일 위라는…","현장",
+"Narrow exposed granite ridge section with old rusted safety chains bolted into the rock, a weathered warning sign with illegible faded lettering, sheer drop into a misty gorge below. No people.",
+null],
+["03","천구백구십구년 시월, 붉게 물든 설악산으로 단풍놀이를 떠났던 사십대 여성…","인물",
+"Korean woman in her early forties seen strictly from behind, hiking up a stone-step trail in Seoraksan, 1999 outdoor wear: maroon windbreaker, small backpack, short permed hair. Framed through overhanging autumn branches as if observed from the trail side.",
+"Subject movement: Woman climbs two slow steps, slight sway of backpack. Face never visible.\nMotion: A few leaves falling in foreground, light flicker through branches. Fixed camera, no pan."],
+["04","암릉 구간에서 발을 헛디뎌 이십여미터 아래 바위로 추락해…","현장",
+"High angle looking down from the edge of a narrow rock ledge into a twenty-meter drop onto jagged boulders far below. A single small hiking cap caught on a rock halfway down. No body, no blood. Vertigo-inducing composition.",
+null],
+["05","당시 경찰이 서둘러 내린 결론은 단순 실족사…","인물",
+"Rural Korean police substation interior 1999, fluorescent light, a uniformed officer seen from behind at a cluttered metal desk stamping a thin case file closed, ashtray and typewriter beside him. Shot through the half-open office door.",
+null],
+["06","당시 그녀와 함께 등산을 떠났던 남편의 삼십년지기 절친 허재완씨…","인물",
+"Korean man in his mid forties seen from behind standing alone on a granite ridge, 1999 hiking jacket, an old 35mm film camera hanging from a strap at his side. Overcast sky, wind. Observed from below the ridge, partially hidden by rocks.",
+"Subject movement: Man stands still, only jacket hem moving in the wind, camera strap swaying slightly.\nMotion: Low clouds sliding behind the ridge. Strictly fixed camera."],
+["07","장례식장 내내 남편 곁을 지키며… 누구보다 서럽게 오열했던 남자","심리",
+"Korean funeral hall in 1999, white chrysanthemum altar with a black-ribboned memorial portrait (portrait face blurred and unreadable), incense smoke. A man in a black suit kneeling with head bowed, shoulders shaking, seen from behind. Single cold overhead light, rest falls into darkness.",
+"Subject movement: Kneeling man's shoulders tremble slightly, head stays bowed.\nMotion: Incense smoke curling upward, candle flames flickering. Fixed camera, very slow push-in."],
+["08","조문객들은 모두 그 진짜 친구의 깊은 자책을 안타까워했습니다","인물",
+"Funeral hall corridor in 1999, mourners in black suits and hanbok standing in quiet clusters, seen from behind at the far end of the corridor, condolence wreaths lining the wall. Dim fluorescent light, long shadows.",
+null],
+["09","그런데 말입니다. 이 완벽한 비극 속에 소름 돋는 모순이…","보드",
+"Dark investigator's desk at night, a single desk lamp pool of light, eleven old printed scene photographs spread across the desk, one photo slightly pulled out of the row. Photos show blurry mountain rock scenes. Overhead surveillance angle.",
+null],
+["10","구조대가 찍은 전명희씨의 등산화 밑창 사진","증거 ★핵심",
+"Authentic Korean rescue team evidence photograph circa 1999: close-up of the sole of a worn women's hiking boot laid on a rock, a small evidence ruler beside it, harsh on-camera flash. Packed dark soil and leaf fragments clearly clumped at the heel edge of the sole, toe area almost clean. Shot on expired Kodak 35mm film, slight greenish cast.",
+null],
+["11","앞으로 쏠려야 할 흙이, 누군가에게 강하게 밀린 것처럼 뒤꿈치 쪽에 뭉쳐…","증거",
+"Macro close-up of hiking boot heel edge with soil pushed and smeared backward, visible drag direction in the dirt texture, granite grit embedded. Low raking light revealing texture. Evidence-photo framing with partial ruler at frame edge.",
+null],
+["12","허재완씨가 사고 당일 찍힌 필름을 전부 불태웠다는 사실이…","심리",
+"Night, backyard of a Korean house, rolled 35mm film strips curling and melting in a rusted metal bucket fire, a man's hands seen from behind and above dropping one more film canister in. Only firelight illuminating the scene, everything else black.",
+"Subject movement: Hand slowly releases a film canister into the bucket, then withdraws.\nMotion: Film strips curling and blackening in the flames, sparks rising, smoke drifting. Fixed camera, no pan."],
+["13","그날 산에는 두명이 아닌 세명이 등산을 했다는 증언이…","인물",
+"Three hiker silhouettes walking in single file along a fog-covered granite ridge, seen from far behind at a great distance: one woman in front, two men behind her, the last man noticeably larger with a big backpack. Telephoto compression, figures partly dissolved in fog.",
+"Subject movement: Three distant silhouettes walking slowly away in single file.\nMotion: Thick fog rolling across the ridge, gradually swallowing the figures. Fixed camera, subtle zoom only."],
+["14","과연 그날 단풍이 붉게 물든 설악산에서는 무슨일이 있었던 걸까요?","풍경",
+"Empty granite ridge at dusk in late October, wind-bent pine, last pale light on the rocks, the same narrow rock section from the accident now deserted. Ominous stillness.",
+"Subject movement: None.\nMotion: Pine branches trembling in wind, light fading slowly, fog creeping up from the valley. Strictly fixed camera."],
+["15","그리고 아내는 왜 남편을 빼고 남편의 절친과 단 둘이 산행을…","인물",
+"A man and a woman in 1999 hiking gear walking up a forest trail together, seen from behind at a distance, a noticeable gap between them, neither looking at the other. Observed through thick autumn foliage in the foreground as if someone is watching them.",
+null],
+["16","잊혀진기록이 오늘 들려드릴 이야기는, 천구백구십구년 설악산 사십대 여성 의문사 사건입니다","타이틀 배경",
+"Old Korean police case folder lying closed on a dark wooden desk, a worn women's hiking boot and a burnt 35mm film canister placed beside it, single desk lamp, deep shadows on the left half of the frame left empty for a title.",
+null]
+];
+const list=document.getElementById('list');
+S.forEach(([n,line,type,img,vid])=>{
+  const ip=img+STYLE;
+  const vp=vid?`${CTX}\n\nCamera work: Strictly fixed camera on tripod. No pan, no tilt.\n${vid}\n${TAIL}`:null;
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML=`<div class="hd"><span class="num">#${n}</span><span class="file">intro_${n}.png${vp?` + intro_${n}.mp4 🎬`:''}</span><span class="tag">${type}</span></div>
+  <div class="line">“${line}”</div>
+  <div class="lbl">IMAGE PROMPT (Flow)<button data-t="i">복사</button></div><pre class="i"></pre>
+  ${vp?'<div class="lbl">VIDEO PROMPT (Grok)<button data-t="v">복사</button></div><pre class="v"></pre>':''}`;
+  c.querySelector('pre.i').textContent=ip; if(vp)c.querySelector('pre.v').textContent=vp;
+  c.querySelectorAll('button').forEach(b=>b.onclick=()=>{const t=c.querySelector('pre.'+b.dataset.t).textContent;
+    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1200)}).catch(()=>{const r=document.createRange();r.selectNodeContents(c.querySelector('pre.'+b.dataset.t));getSelection().removeAllRanges();getSelection().addRange(r)})});
+  list.appendChild(c);
+});
+</script></body></html>
